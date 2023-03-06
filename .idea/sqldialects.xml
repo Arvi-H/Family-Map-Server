@@ -5,4 +5,7 @@
     <file url="file://$PROJECT_DIR$/src/main/java/DataAccess/PersonDao.java" dialect="GenericSQL" />
     <file url="PROJECT" dialect="SQLite" />
   </component>
+  <component name="SqlResolveMappings">
+    <file url="file://$PROJECT_DIR$/src/main/java/DataAccess/UserDao.java" scope="{&quot;node&quot;:{  &quot;@negative&quot;:&quot;1&quot;,  &quot;group&quot;:{   &quot;@kind&quot;:&quot;root&quot;,   &quot;node&quot;:{    &quot;name&quot;:{     &quot;@qname&quot;:&quot;0d9708b4-99b2-4321-a0d0-641c2329525f&quot;    }   }  } }}" />
+  </component>
 </project>
