@@ -1,61 +1,22 @@
 package Model;
 
-/**
- * The Event Class represents an event object in the family map application.
- */
-public class Event {
-    /**
-     * Unique identifier for this event
-     */
-    private String eventID;
-    /**
-     * Username of user to which this event belongs
-     */
-    private String associatedUsername;
-    /**
-     * ID of person to which this event belongs
-     */
-    private String personID;
-    /**
-     * Latitude of event’s location
-     */
-    private float latitude;
-    /**
-     * Longitude of event’s location
-     */
-    private float longitude;
-    /**
-     * Country in which event occurred
-     */
-    private String country;
-    /**
-     * City in which event occurred
-     */
-    private String city;
-    /**
-     * Type of event
-     */
-    private String eventType;
-    /**
-     * Year in which event occurred
-     */
-    private int year;
+import java.util.Objects;
 
-    /**
-     * Constructor for the Event class.
-     * @param eventID The ID of the event.
-     * @param associatedUsername The username associated with the event.
-     * @param personID The ID of the person associated with the event.
-     * @param latitude The latitude of the event's location.
-     * @param longitude The longitude of the event's location.
-     * @param country The country where the event occurred.
-     * @param city The city where the event occurred.
-     * @param eventType The type of the event.
-     * @param year The year the event occurred.
-     */
-    public Event(String eventID, String associatedUsername, String personID, float latitude, float longitude, String country, String city, String eventType, int year) {
+public class Event {
+    private String eventID;
+    private String associatedUsername;
+    private String personID;
+    private Float latitude;
+    private Float longitude;
+    private String country;
+    private String city;
+    private String eventType;
+    private Integer year;
+
+    public Event(String eventID, String username, String personID, Float latitude, Float longitude,
+                 String country, String city, String eventType, Integer year) {
         this.eventID = eventID;
-        this.associatedUsername = associatedUsername;
+        this.associatedUsername = username;
         this.personID = personID;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -64,11 +25,6 @@ public class Event {
         this.eventType = eventType;
         this.year = year;
     }
-
-    /**
-     * Constructs a new empty Event object.
-     */
-    public Event() {}
 
     public String getEventID() {
         return eventID;
@@ -94,19 +50,19 @@ public class Event {
         this.personID = personID;
     }
 
-    public float getLatitude() {
+    public Float getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(float latitude) {
+    public void setLatitude(Float latitude) {
         this.latitude = latitude;
     }
 
-    public float getLongitude() {
+    public Float getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(float longitude) {
+    public void setLongitude(Float longitude) {
         this.longitude = longitude;
     }
 
@@ -134,11 +90,20 @@ public class Event {
         this.eventType = eventType;
     }
 
-    public int getYear() {
+    public Integer getYear() {
         return year;
     }
 
-    public void setYear(int year) {
+    public void setYear(Integer year) {
         this.year = year;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Event event = (Event) o;
+        return Objects.equals(eventID, event.eventID) && Objects.equals(associatedUsername, event.associatedUsername) && Objects.equals(personID, event.personID) && Objects.equals(latitude, event.latitude) && Objects.equals(longitude, event.longitude) && Objects.equals(country, event.country) && Objects.equals(city, event.city) && Objects.equals(eventType, event.eventType) && Objects.equals(year, event.year);
+    }
+
 }

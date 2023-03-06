@@ -8,7 +8,7 @@ import java.sql.Connection;
  * It provides methods for inserting new AuthToken objects, finding an AuthToken by its
  * token string, and clearing all AuthToken objects from the database.
  */
-public class AuthTokenDAO {
+public class AuthTokenDao {
 
     /** The database connection used for executing SQL queries. */
     private final Connection conn;
@@ -17,7 +17,7 @@ public class AuthTokenDAO {
      * Constructs a new AuthTokenDAO object with the specified database connection.
      * @param conn the database connection to use.
      */
-    public AuthTokenDAO(Connection conn) {
+    public AuthTokenDao(Connection conn) {
         this.conn = conn;
     }
 

@@ -7,7 +7,7 @@ public class AuthToken {
     /**
      * The authentication token string.
      */
-    private String authToken;
+    private String authtoken;
 
     /**
      * The username that is associated with the authToken.
@@ -16,11 +16,11 @@ public class AuthToken {
 
     /**
      * Constructs a new AuthToken object with the specified authentication token string and username.
-     * @param auth_token The authentication token string.
+     * @param authtoken The authentication token string.
      * @param username The username that is associated with the authToken.
      */
-    public AuthToken(String auth_token, String username) {
-        this.authToken = auth_token;
+    public AuthToken(String authtoken, String username) {
+        this.authtoken = authtoken;
         this.username = username;
     }
 
@@ -29,12 +29,12 @@ public class AuthToken {
      */
     public AuthToken() {}
 
-    public String getAuthToken() {
-        return authToken;
+    public String getAuthtoken() {
+        return authtoken;
     }
 
-    public void setAuthToken(String authToken) {
-        this.authToken = authToken;
+    public void setAuthtoken(String authtoken) {
+        this.authtoken = authtoken;
     }
 
     public String getUsername() {

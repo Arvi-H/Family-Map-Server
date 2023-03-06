@@ -8,7 +8,7 @@ import java.sql.*;
  * The EventDAO class provides methods to access and manipulate Event data in the database.
  * It includes methods to insert new events, find events by their ID, and clear the entire Event table.
  */
-public class EventDAO {
+public class EventDao {
     /** The database connection used for executing SQL queries. */
     private final Connection conn;
 
@@ -16,7 +16,7 @@ public class EventDAO {
      * Constructs a new EventDAO object with the specified database connection.
      * @param conn the database connection to use.
      */
-    public EventDAO(Connection conn) {
+    public EventDao(Connection conn) {
         this.conn = conn;
     }
 
