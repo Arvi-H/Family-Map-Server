@@ -22,19 +22,8 @@ public class JsonData {
         }
     }
 
-    public Location getRandomLocation() {
-        return locations[(new Random()).nextInt(locations.length)];
-    }
-
-    public String getRandomFemaleName() {
-        return femaleNames[(new Random()).nextInt(femaleNames.length)];
-    }
-
-    public String getRandomMaleName() {
-        return maleNames[(new Random()).nextInt(maleNames.length)];
-    }
-
-    public String getRandomSurname() {
-        return surnames[(new Random()).nextInt(surnames.length)];
-    }
+    public Location getRandomLocation() {return locations[(new Random()).nextInt(locations.length)];}
+    public String getRandomFemaleName() {return femaleNames[(new Random()).nextInt(femaleNames.length)];}
+    public String getRandomMaleName() {return maleNames[(new Random()).nextInt(maleNames.length)];}
+    public String getRandomSurname() {return surnames[(new Random()).nextInt(surnames.length)];}
 }
