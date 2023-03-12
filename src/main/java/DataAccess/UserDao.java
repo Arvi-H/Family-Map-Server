@@ -74,7 +74,7 @@ public class UserDao {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DataAccessException("Error encountered while finding an event in the database");
+            throw new DataAccessException("Error encountered while finding a user in the database");
         }
     }
 
@@ -88,7 +88,7 @@ public class UserDao {
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DataAccessException("Error encountered while clearing the event table");
+            throw new DataAccessException("Error encountered while clearing the user table");
         }
     }
 }
