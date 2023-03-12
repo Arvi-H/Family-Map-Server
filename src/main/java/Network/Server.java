@@ -1,10 +1,12 @@
+package Network;
+
 import java.io.*;
 import java.net.*;
 import com.sun.net.httpserver.*;
 import Handler.*;
 
 /**
- * The Server class is the "main" class for the server
+ * The Network.Server class is the "main" class for the server
  * 	For this server, the only command-line argument is the port number on which the server should accept incoming client connections.
  */
 public class Server {
@@ -26,7 +28,7 @@ public class Server {
     private void run(String portNumber) {
         // Since the server has no "user interface", it should display "log" messages containing information about its internal activities.
         // This allows a system administrator (or you) to know what is happening inside the server, which can be useful for diagnosing problems that may occur.
-        System.out.println("Initializing HTTP Server");
+        System.out.println("Initializing HTTP Network.Server");
 
         try {
             // Create a new HttpServer object.
@@ -78,7 +80,7 @@ public class Server {
         server.start();
 
         // Log message indicating that the server has successfully started.
-        System.out.println("Server started");
+        System.out.println("Network.Server started");
     }
 
     // "main" method for the server program
