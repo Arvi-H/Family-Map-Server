@@ -1,6 +1,7 @@
 package Model;
 
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * The Person class represents a Person object in the family map application.
@@ -51,6 +52,7 @@ public class Person {
      * @param spouseID the person ID of the person's spouse
      */
     public Person(String personID, String associatedUsername, String firstName, String lastName, String gender, String fatherID, String motherID, String spouseID) {
+//        this.personID = personID == null ? UUID.randomUUID().toString() : personID;
         this.personID = personID;
         this.associatedUsername = associatedUsername;
         this.firstName = firstName;

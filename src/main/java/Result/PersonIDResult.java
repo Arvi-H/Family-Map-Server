@@ -3,7 +3,7 @@ package Result;
 /**
  * PersonIDResult is a class that represents the result of a request to retrieve information about a person from a database.
  */
-public class PersonIDResult {
+public class PersonIDResult extends Result {
     /**
      The associated username for the person.
      */
@@ -36,14 +36,7 @@ public class PersonIDResult {
      The ID of the person's spouse.
      */
     private String spouseID;
-    /**
-     A message indicating any additional information about the request.
-     */
-    private String message;
-    /**
-     A boolean indicating whether the request was successful or not.
-     */
-    private boolean success;
+
     /**
      Constructs a PersonIDResult object with the specified parameters.
      @param associatedUsername The associated username for the person.
@@ -54,10 +47,8 @@ public class PersonIDResult {
      @param fatherID The ID of the person's father.
      @param motherID The ID of the person's mother.
      @param spouseID The ID of the person's spouse.
-     @param success A boolean indicating whether the request was successful or not.
-     @param message A message indicating any additional information about the request.
      */
-    public PersonIDResult(String associatedUsername, String personID, String firstName, String lastName, String gender, String fatherID, String motherID, String spouseID, boolean success, String message) {
+    public PersonIDResult(String associatedUsername, String personID, String firstName, String lastName, String gender, String fatherID, String motherID, String spouseID) {
         this.associatedUsername = associatedUsername;
         this.personID = personID;
         this.firstName = firstName;
@@ -66,8 +57,6 @@ public class PersonIDResult {
         this.fatherID = fatherID;
         this.motherID = motherID;
         this.spouseID = spouseID;
-        this.success = success;
-        this.message = message;
     }
 
     /**
@@ -135,21 +124,5 @@ public class PersonIDResult {
 
     public void setSpouseID(String spouseID) {
         this.spouseID = spouseID;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public boolean isSuccess() {
-        return success;
-    }
-
-    public void setSuccess(boolean success) {
-        this.success = success;
     }
 }

@@ -3,7 +3,7 @@ package Result;
 /**
  * This class represents the result of a user registration attempt.
  */
-public class RegisterResult {
+public class RegisterResult extends Result{
 
     /**
      * The authentication token generated for the user
@@ -37,15 +37,11 @@ public class RegisterResult {
      * @param auth_token the authentication token generated for the user
      * @param username the username of the registered user
      * @param personID the ID of the person associated with the registered user
-     * @param success whether the registration was successful
-     * @param message a message indicating the result of the registration attempt
      */
-    public RegisterResult(String auth_token, String username, String personID, boolean success, String message) {
+    public RegisterResult(String auth_token, String username, String personID) {
         this.auth_token = auth_token;
         this.username = username;
         this.personID = personID;
-        this.success = success;
-        this.message = message;
     }
 
     /**
@@ -75,21 +71,5 @@ public class RegisterResult {
 
     public void setPersonID(String personID) {
         this.personID = personID;
-    }
-
-    public boolean isSuccess() {
-        return success;
-    }
-
-    public void setSuccess(boolean success) {
-        this.success = success;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 }

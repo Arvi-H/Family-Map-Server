@@ -3,7 +3,7 @@ package Result;
 /**
  * EventIDResult class represents the result of a request for a single event from the server
  */
-public class EventIDResult {
+public class EventIDResult extends Result {
     /**
      * The username of the user account this event belongs to
      */
@@ -40,14 +40,6 @@ public class EventIDResult {
      * The year of the event
      */
     private int year;
-    /**
-     * A flag indicating whether the request was successful
-     */
-    private String message;
-    /**
-     * Additional information or error message
-     */
-    private boolean success;
 
     /**
      * Constructor for creating a new EventIDResult object with all fields set
@@ -60,10 +52,8 @@ public class EventIDResult {
      * @param city the city of the event's location
      * @param eventType the type of event
      * @param year the year of the event
-     * @param success a flag indicating whether the request was successful
-     * @param message additional information or error message
      */
-    public EventIDResult(String associatedUsername, String eventID, String personID, float latitude, float longitude, String country, String city, String eventType, int year, boolean success, String message) {
+    public EventIDResult(String associatedUsername, String eventID, String personID, float latitude, float longitude, String country, String city, String eventType, int year) {
         this.associatedUsername = associatedUsername;
         this.eventID = eventID;
         this.personID = personID;
@@ -73,8 +63,6 @@ public class EventIDResult {
         this.city = city;
         this.eventType = eventType;
         this.year = year;
-        this.success = success;
-        this.message = message;
     }
 
     /**
@@ -152,21 +140,5 @@ public class EventIDResult {
 
     public void setYear(int year) {
         this.year = year;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public boolean isSuccess() {
-        return success;
-    }
-
-    public void setSuccess(boolean success) {
-        this.success = success;
     }
 }

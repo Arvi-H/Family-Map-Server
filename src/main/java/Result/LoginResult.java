@@ -4,7 +4,7 @@ package Result;
  * This class represents a user login result.
  * It contains the authentication token, username, personID, success status, and message.
  */
-public class LoginResult {
+public class LoginResult extends Result{
     /** The authentication token. */
     private String auth_token;
 
@@ -14,26 +14,16 @@ public class LoginResult {
     /** The person ID associated with the user. */
     private String personID;
 
-    /** The success status of the login attempt. */
-    private boolean success;
-
-    /** The message associated with the login attempt. */
-    private String message;
-
     /**
      * Constructs a new LoginResult object.
      * @param auth_token the authentication token to set
      * @param username the username to set
      * @param personID the person ID to set
-     * @param success the success status to set
-     * @param message the message to set
      */
-    public LoginResult(String auth_token, String username, String personID, boolean success, String message) {
+    public LoginResult(String auth_token, String username, String personID) {
         this.auth_token = auth_token;
         this.username = username;
         this.personID = personID;
-        this.success = success;
-        this.message = message;
     }
 
     /**
@@ -63,21 +53,5 @@ public class LoginResult {
 
     public void setPersonID(String personID) {
         this.personID = personID;
-    }
-
-    public boolean isSuccess() {
-        return success;
-    }
-
-    public void setSuccess(boolean success) {
-        this.success = success;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 }

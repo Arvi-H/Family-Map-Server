@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="FamilyMapServerStudent" />
         <module name="Family-Map" />
+        <module name="Family-Map-Server" />
       </profile>
     </annotationProcessing>
   </component>

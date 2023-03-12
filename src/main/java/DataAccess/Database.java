@@ -1,9 +1,8 @@
 package DataAccess;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import Model.Event;
+
+import java.sql.*;
 
 public class Database {
     private Connection conn;
@@ -51,7 +50,7 @@ public class Database {
                 conn.commit();
             } else {
                 // If we find out something went wrong, pass a false into closeConnection and this
-                // will rollback any changes we made during this connection
+                // will roll back any changes we made during this connection
                 conn.rollback();
             }
             conn.close();
@@ -62,6 +61,15 @@ public class Database {
         }
     }
 
+    public void clearTables() throws DataAccessException {
+        String sql = "DELETE FROM Events; DELETE FROM Users; DELETE FROM Persons; DELETE FROM Authokens;";
 
+        try (Statement stmt = conn.createStatement();) {
+            stmt.executeUpdate(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataAccessException("Error encountered while clearing tables.");
+        }
+    }
 }
 

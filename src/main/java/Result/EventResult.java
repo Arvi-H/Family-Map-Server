@@ -3,7 +3,7 @@ package Result;
 /**
  * The result of a request to retrieve events from the database.
  */
-public class EventResult {
+public class EventResult extends Result {
     /**
      * An array of events matching the request parameters.
      */
@@ -16,11 +16,9 @@ public class EventResult {
     /**
      * Creates a new instance of the EventResult class.
      * @param data An array of events matching the request parameters.
-     * @param success A Boolean indicating whether the request was successful.
      */
-    public EventResult(EventResult[] data, boolean success) {
+    public EventResult(EventResult[] data) {
         this.data = data;
-        this.success = success;
     }
 
     /**
@@ -34,13 +32,5 @@ public class EventResult {
 
     public void setData(EventResult[] data) {
         this.data = data;
-    }
-
-    public boolean isSuccess() {
-        return success;
-    }
-
-    public void setSuccess(boolean success) {
-        this.success = success;
     }
 }
