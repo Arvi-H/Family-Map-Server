@@ -13,4 +13,8 @@ public class EventIDService {
     EventIDResult event() {
         return null;
     }
+
+    public EventIDResult getEventById(String path, String authID) {
+        return null;
+    }
 }

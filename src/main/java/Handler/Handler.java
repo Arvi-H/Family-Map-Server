@@ -18,13 +18,17 @@ public abstract class Handler {
         return exchange.getRequestMethod().toUpperCase().equals("GET");
     }
 
-    public <T> T parseRequest(HttpExchange exchange, Class<T> dataClass) throws IOException {
+    protected boolean hasAuthorizationKey(HttpExchange exchange) {
+        return exchange.getRequestHeaders().containsKey("Authorization");
+    }
+
+    protected  <T> T parseRequest(HttpExchange exchange, Class<T> dataClass) throws IOException {
         InputStream reqBody = exchange.getRequestBody();
         String reqData = readData(reqBody);
         return deserialize(reqData, dataClass);
     }
 
-    public void parseResponse(HttpExchange exchange, Result response) throws IOException {
+    protected void parseResponse(HttpExchange exchange, Result response) throws IOException {
         String json = serialize(response);
         OutputStream os = exchange.getResponseBody();
         writeData(json, os);
@@ -40,6 +44,10 @@ public abstract class Handler {
 
     protected void sendOkResponse(HttpExchange exchange) throws IOException {
         exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+    }
+
+    protected void sendUnAuthorizedResponse(HttpExchange exchange) throws IOException {
+        exchange.sendResponseHeaders(HttpURLConnection.HTTP_UNAUTHORIZED, 0);
     }
 
     protected void sendInternalServerErrorResponse(HttpExchange exchange) throws IOException {
