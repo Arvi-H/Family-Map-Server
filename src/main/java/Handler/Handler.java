@@ -7,6 +7,7 @@ import java.io.*;
 import java.net.HttpURLConnection;
 
 import static Network.Deserializer.deserialize;
+import static Network.Serializer.serialize;
 
 public abstract class Handler {
     protected boolean isPOSTRequest(HttpExchange exchange) {
@@ -21,6 +22,12 @@ public abstract class Handler {
         InputStream reqBody = exchange.getRequestBody();
         String reqData = readData(reqBody);
         return deserialize(reqData, dataClass);
+    }
+
+    public void parseResponse(HttpExchange exchange, Result response) throws IOException {
+        String json = serialize(response);
+        OutputStream os = exchange.getResponseBody();
+        writeData(json, os);
     }
 
     protected void sendResponse(HttpExchange exchange, Result response) throws IOException {

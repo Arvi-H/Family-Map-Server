@@ -12,7 +12,7 @@ public class LoginService {
      * @param l the LoginRequest object containing the user's login information
      * @return a LoginResult object containing the authentication token, username, person ID, success status, and message
      */
-    LoginResult login(LoginRequest l) {
+    public LoginResult login(LoginRequest l) {
         return null;
     }
 }
