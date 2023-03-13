@@ -1,5 +1,12 @@
 package JSONData;
 
+import com.sun.net.httpserver.HttpExchange;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.nio.file.Files;
 import java.util.Random;
 
 import static Network.Deserializer.deserializeFromFile;
@@ -23,7 +30,10 @@ public class JsonData {
     }
 
     public Location getRandomLocation() {return locations[(new Random()).nextInt(locations.length)];}
+
     public String getRandomFemaleName() {return femaleNames[(new Random()).nextInt(femaleNames.length)];}
+
     public String getRandomMaleName() {return maleNames[(new Random()).nextInt(maleNames.length)];}
+
     public String getRandomSurname() {return surnames[(new Random()).nextInt(surnames.length)];}
 }

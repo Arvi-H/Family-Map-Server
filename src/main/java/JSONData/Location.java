@@ -11,19 +11,11 @@ public class Location {
         this.city = city;
     }
 
-    public double getLatitude() {
-        return latitude;
-    }
+    public double getLatitude() {return latitude;}
 
-    public double getLongitude() {
-        return longitude;
-    }
+    public double getLongitude() {return longitude;}
 
-    public String getCity() {
-        return city;
-    }
+    public String getCity() {return city;}
 
-    public String getCountry() {
-        return country;
-    }
+    public String getCountry() {return country;}
 }
