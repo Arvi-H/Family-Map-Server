@@ -10,7 +10,7 @@ public class ClearService {
      * Clears all data from the database.
      * @return A ClearResult object indicating the success or failure of the operation.
      */
-    ClearResult clear() {
+    public ClearResult clear() {
         return null;
     }
 }

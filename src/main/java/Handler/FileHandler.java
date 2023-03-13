@@ -5,8 +5,6 @@ import com.sun.net.httpserver.HttpHandler;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
 import java.nio.file.Files;
 
 public class FileHandler extends Handler implements HttpHandler {
