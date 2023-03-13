@@ -4,12 +4,12 @@ public class Result {
     /**
      * A message describing the result of the operation.
      */
-    private String message;
+    protected String message;
 
     /**
      * Whether the operation was successful.
      */
-    private boolean success;
+    protected boolean success;
 
     public String getMessage() {
         return message;

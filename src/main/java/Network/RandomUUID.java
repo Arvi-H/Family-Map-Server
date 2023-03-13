@@ -3,7 +3,7 @@ package Network;
 import java.util.UUID;
 
 public class RandomUUID {
-    public String getRandomUUID() {
+    public static String getRandomUUID() {
         return UUID.randomUUID().toString();
     }
 }
