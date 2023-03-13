@@ -12,7 +12,7 @@ public class LoadService {
      * @param l LoadRequest object containing the data to be loaded
      * @return LoadResult object containing information about the success or failure of the load operation
      */
-    LoadResult load(LoadRequest l) {
+    public LoadResult load(LoadRequest l) {
         return null;
     }
 }
