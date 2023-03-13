@@ -14,4 +14,8 @@ public class PersonIDService {
     PersonIDResult personID() {
         return null;
     }
+
+    public PersonIDResult getPersonByID(String path, String authID) {
+        return null;
+    }
 }
