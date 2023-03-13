@@ -12,7 +12,7 @@ public class RegisterService {
      * @param r the RegisterRequest containing the user's information.
      * @return the RegisterResult indicating whether the registration was successful or not.
      */
-    RegisterResult register(RegisterRequest r) {
+    public RegisterResult register(RegisterRequest r) {
         return null;
     }
 }
