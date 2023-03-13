@@ -10,7 +10,7 @@ public class FillService {
      * Generates data for the specified user account
      * @return A FillResult object containing the result of the operation
      */
-    FillResult fill() {
+    public FillResult fill(String username, int generations) {
         return null;
     }
 }
