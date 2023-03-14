@@ -21,8 +21,8 @@ public class LoginService {
      * @return a LoginResult object containing the authentication token, username, person ID, success status, and message
      */
     public LoginResult login(LoginRequest loginRequest) {
-        LoginResult loginResult = new LoginResult();
         Database db = new Database();
+        LoginResult loginResult;
 
         try {
             db.openConnection();
@@ -69,7 +69,6 @@ public class LoginService {
             // Rollback Changes
             db.closeConnection(false);
         }
-
         return loginResult;
     }
 }

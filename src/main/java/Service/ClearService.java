@@ -1,5 +1,7 @@
 package Service;
 
+import DataAccess.DataAccessException;
+import DataAccess.Database;
 import Result.ClearResult;
 
 /**
@@ -11,6 +13,22 @@ public class ClearService {
      * @return A ClearResult object indicating the success or failure of the operation.
      */
     public ClearResult clear() {
-        return null;
+        Database db = new Database();
+        ClearResult clearResult = new ClearResult();
+
+        try {
+            db.openConnection();
+            db.clearTables();
+
+            clearResult.setMessage("Cleared successfully");
+            clearResult.setSuccess(true);
+
+            db.closeConnection(true);
+        } catch (DataAccessException e) {
+            clearResult.setMessage(e.getMessage());
+            clearResult.setSuccess(false);
+            db.closeConnection(false);
+        }
+        return clearResult;
     }
 }
