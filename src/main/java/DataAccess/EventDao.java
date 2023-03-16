@@ -1,8 +1,17 @@
 package DataAccess;
 
+import JSONData.Location;
 import Model.Event;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.Random;
+
+import static Network.Deserializer.deserializeFromLocationFile;
+import static Network.Deserializer.deserializeFromNamesFile;
+import static Network.RandomUUID.getRandomUUID;
 
 /**
  * The EventDAO class provides methods to access and manipulate Event data in the database.
@@ -12,12 +21,18 @@ public class EventDao {
     /** The database connection used for executing SQL queries. */
     private final Connection conn;
 
+    private ArrayList<Location> locations = new ArrayList<>();
     /**
      * Constructs a new EventDAO object with the specified database connection.
      * @param conn the database connection to use.
      */
     public EventDao(Connection conn) {
         this.conn = conn;
+        try {
+            locations = deserializeFromLocationFile(new File("json/locations.json"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -93,12 +108,26 @@ public class EventDao {
         }
     }
 
-    public void generateBirth(String username, String personID, int i) {
+    public Location getRandomLocation(ArrayList<Location> locations) {
+        return locations.get(new Random().nextInt(locations.size()));
     }
 
-    public void generateMarriage(String username, String fatherID, String motherID, int i) {
+    public void generateEvent(String associatedUsername, String personID, int year, String eventType) throws DataAccessException {
+        Location location = getRandomLocation(locations);
+        Event event = new Event(getRandomUUID(), associatedUsername, personID, location.getLatitude(), location.getLongitude(), location.getCountry(), location.getCity(), eventType, year);
+        insert(event);
     }
 
-    public void generateDeath(String username, String fatherID, int i) {
+    public void generateBirth(String associatedUsername, String personID, int year) throws DataAccessException {
+        generateEvent(associatedUsername, personID, year, "birth");
+    }
+
+    public void generateMarriage(String associatedUsername, String fatherID, String motherID, int year) throws DataAccessException {
+        generateEvent(associatedUsername, fatherID, (year-5), "marriage");
+        generateEvent(associatedUsername, motherID, (year-5), "marriage");
+    }
+
+    public void generateDeath(String associatedUsername, String personID, int year) throws DataAccessException {
+        generateEvent(associatedUsername, personID, (year+65), "death");
     }
 }

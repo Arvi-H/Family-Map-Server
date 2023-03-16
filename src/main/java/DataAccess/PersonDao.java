@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Random;
 
-import static Network.Deserializer.deserializeFromFile;
+import static Network.Deserializer.deserializeFromNamesFile;
 import static Network.RandomUUID.getRandomUUID;
 
 /**
@@ -33,9 +33,9 @@ public class PersonDao {
     public PersonDao(Connection conn) {
         this.conn = conn;
         try {
-            maleNames = deserializeFromFile(new File("json/mnames.json"));
-            femaleNames = deserializeFromFile(new File("json/fnames.json"));
-            surnames = deserializeFromFile(new File("json/snames.json"));
+            maleNames = deserializeFromNamesFile(new File("json/mnames.json"));
+            femaleNames = deserializeFromNamesFile(new File("json/fnames.json"));
+            surnames = deserializeFromNamesFile(new File("json/snames.json"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -132,7 +132,7 @@ public class PersonDao {
         return names.get(new Random().nextInt(names.size()));
     }
 
-    public void generateParents(String username, String childID, int childBirthYear, int numGenerations, EventDao eventDao, String fatherLastName) throws DataAccessException {
+    public void generateParents(String username, String IDOfChild, int birthYearOfChild, int numGenerations, EventDao eventDao, String fatherLastName) throws DataAccessException {
         String fatherID = getRandomUUID();
         String motherID = getRandomUUID();
 
@@ -143,21 +143,21 @@ public class PersonDao {
         Person father = new Person(fatherID, username, fatherName, fatherLastName, "m", null, null, motherID);
         Person mother = new Person(motherID, username, motherName, motherLastName, "f", null, null, fatherID);
 
-        insertFatherID(childID, fatherID);
-        insertMotherID(childID, motherID);
+        insertFatherID(IDOfChild, fatherID);
+        insertMotherID(IDOfChild, motherID);
         insert(father);
         insert(mother);
 
         // Generate and insert events for parents
-        eventDao.generateBirth(username, fatherID, (childBirthYear - 26));
-        eventDao.generateBirth(username, motherID, (childBirthYear - 26));
-        eventDao.generateMarriage(username, fatherID, motherID, (childBirthYear - 5));
-        eventDao.generateDeath(username, fatherID, (childBirthYear + 10));
-        eventDao.generateDeath(username, motherID, (childBirthYear + 8));
+        eventDao.generateBirth(username, fatherID, (birthYearOfChild - 26));
+        eventDao.generateBirth(username, motherID, (birthYearOfChild - 26));
+        eventDao.generateMarriage(username, fatherID, motherID, (birthYearOfChild - 5));
+        eventDao.generateDeath(username, fatherID, (birthYearOfChild + 10));
+        eventDao.generateDeath(username, motherID, (birthYearOfChild + 8));
 
         if(numGenerations > 0) {
-            generateParents(username, fatherID, (childBirthYear - 26), (numGenerations - 1), eventDao, fatherLastName);
-            generateParents(username, motherID, (childBirthYear - 26), (numGenerations - 1), eventDao, motherLastName);
+            generateParents(username, fatherID, (birthYearOfChild - 26), (numGenerations - 1), eventDao, fatherLastName);
+            generateParents(username, motherID, (birthYearOfChild - 26), (numGenerations - 1), eventDao, motherLastName);
         }
     }
 

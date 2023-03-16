@@ -1,5 +1,6 @@
 package Network;
 
+import JSONData.Location;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -14,9 +15,16 @@ public class Deserializer {
         return (new Gson()).fromJson(val, returnType);
     }
 
-    public static ArrayList<String> deserializeFromFile(File file) throws IOException {
+    public static ArrayList<String> deserializeFromNamesFile(File file) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             return (new Gson()).fromJson(reader, new TypeToken<ArrayList<String>>(){}.getType());
+        } catch (IOException e) {
+            throw new IOException("Error while deserializing from file: " + e.getMessage());
+        }
+    }
+    public static ArrayList<Location> deserializeFromLocationFile(File file) throws IOException {
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            return (new Gson()).fromJson(reader, new TypeToken<ArrayList<Location>>(){}.getType());
         } catch (IOException e) {
             throw new IOException("Error while deserializing from file: " + e.getMessage());
         }
