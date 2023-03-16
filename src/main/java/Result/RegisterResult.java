@@ -44,11 +44,7 @@ public class RegisterResult extends Result{
         this.personID = personID;
     }
 
-    /**
-     * Constructs a new RegisterResult object with default values.
-     */
     public RegisterResult() {}
-
     public String getAuth_token() {
         return auth_token;
     }
