@@ -30,11 +30,13 @@ public class LoadService {
                 userDao.insert(user);
                 numUsers++;
             }
+
             for (Person person : loadRequest.getPersons()) {
                 PersonDao personDao = new PersonDao(db.getConnection());
                 personDao.insert(person);
                 numPersons++;
             }
+
             for (Event event : loadRequest.getEvents()) {
                 EventDao eventDao = new EventDao(db.getConnection());
                 eventDao.insert(event);

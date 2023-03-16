@@ -77,7 +77,6 @@ public class EventDao {
             e.printStackTrace();
             throw new DataAccessException("Error encountered while finding an event in the database");
         }
-
     }
 
     /**
@@ -92,5 +91,14 @@ public class EventDao {
             e.printStackTrace();
             throw new DataAccessException("Error encountered while clearing the event table");
         }
+    }
+
+    public void generateBirth(String username, String personID, int i) {
+    }
+
+    public void generateMarriage(String username, String fatherID, String motherID, int i) {
+    }
+
+    public void generateDeath(String username, String fatherID, int i) {
     }
 }

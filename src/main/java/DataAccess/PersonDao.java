@@ -1,11 +1,19 @@
 package DataAccess;
 
 import Model.Person;
+import Model.User;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Random;
+
+import static Network.Deserializer.deserializeFromFile;
+import static Network.RandomUUID.getRandomUUID;
 
 /**
  * The PersonDAO class provides methods to access and manipulate Event data in the database.
@@ -14,6 +22,9 @@ import java.sql.SQLException;
 public class PersonDao {
     /** The database connection used for executing SQL queries. */
     private final Connection conn;
+    private ArrayList<String> maleNames = new ArrayList<>();
+    private ArrayList<String> femaleNames = new ArrayList<>();
+    private ArrayList<String> surnames = new ArrayList<>();
 
     /**
      * Constructs a new PersonDAO object with the specified database connection.
@@ -21,6 +32,13 @@ public class PersonDao {
      */
     public PersonDao(Connection conn) {
         this.conn = conn;
+        try {
+            maleNames = deserializeFromFile(new File("json/mnames.json"));
+            femaleNames = deserializeFromFile(new File("json/fnames.json"));
+            surnames = deserializeFromFile(new File("json/snames.json"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -94,4 +112,81 @@ public class PersonDao {
             throw new DataAccessException("Error encountered while clearing the person table");
         }
     }
+
+    public void generateTree(User user, String personID, int numGenerations, EventDao eventDao) throws DataAccessException {
+        int birthYear = 1995;
+
+        // Create a new Person object for the user and add it to the database
+        insert(new Person(personID, user.getUsername(), user.getFirstName(), user.getLastName(), user.getGender(), null, null, null));
+
+        // Generate a birth event for the user
+        eventDao.generateBirth(user.getUsername(), personID, birthYear);
+
+        // Generate the parents for the user recursively
+        if(numGenerations > 0) {
+            generateParents(user.getUsername(), personID, birthYear, (numGenerations - 1), eventDao, user.getLastName());
+        }
+    }
+
+    public String getRandomName(ArrayList<String> names) {
+        return names.get(new Random().nextInt(names.size()));
+    }
+
+    public void generateParents(String username, String childID, int childBirthYear, int numGenerations, EventDao eventDao, String fatherLastName) throws DataAccessException {
+        String fatherID = getRandomUUID();
+        String motherID = getRandomUUID();
+
+        String fatherName = getRandomName(maleNames);
+        String motherName = getRandomName(femaleNames);
+        String motherLastName = getRandomName(surnames);
+
+        Person father = new Person(fatherID, username, fatherName, fatherLastName, "m", null, null, motherID);
+        Person mother = new Person(motherID, username, motherName, motherLastName, "f", null, null, fatherID);
+
+        insertFatherID(childID, fatherID);
+        insertMotherID(childID, motherID);
+        insert(father);
+        insert(mother);
+
+        // Generate and insert events for parents
+        eventDao.generateBirth(username, fatherID, (childBirthYear - 26));
+        eventDao.generateBirth(username, motherID, (childBirthYear - 26));
+        eventDao.generateMarriage(username, fatherID, motherID, (childBirthYear - 5));
+        eventDao.generateDeath(username, fatherID, (childBirthYear + 10));
+        eventDao.generateDeath(username, motherID, (childBirthYear + 8));
+
+        if(numGenerations > 0) {
+            generateParents(username, fatherID, (childBirthYear - 26), (numGenerations - 1), eventDao, fatherLastName);
+            generateParents(username, motherID, (childBirthYear - 26), (numGenerations - 1), eventDao, motherLastName);
+        }
+    }
+
+    public void insertMotherID(String userID, String motherID) throws DataAccessException {
+        String sql = "UPDATE Persons SET motherID = ? WHERE personID = ?;";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, motherID);
+            stmt.setString(2, userID);
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataAccessException("Error encountered while inserting user's motherID");
+        }
+    }
+
+    public void insertFatherID(String userID, String fatherID) throws DataAccessException {
+        String sql = "UPDATE Persons SET fatherID = ? WHERE personID = ?;";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, fatherID);
+            stmt.setString(2, userID);
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataAccessException("Error encountered while inserting user's motherID");
+        }
+    }
+
 }
