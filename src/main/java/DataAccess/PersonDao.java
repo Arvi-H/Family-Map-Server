@@ -1,5 +1,6 @@
 package DataAccess;
 
+import JSONData.Names;
 import Model.Person;
 import Model.User;
 
@@ -10,9 +11,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 import static Network.Deserializer.deserializeFromNamesFile;
+import static Network.Deserializer.deserializeNameList;
 import static Network.RandomUUID.getRandomUUID;
 
 /**
@@ -22,9 +25,9 @@ import static Network.RandomUUID.getRandomUUID;
 public class PersonDao {
     /** The database connection used for executing SQL queries. */
     private final Connection conn;
-    private ArrayList<String> maleNames = new ArrayList<>();
-    private ArrayList<String> femaleNames = new ArrayList<>();
-    private ArrayList<String> surnames = new ArrayList<>();
+    private ArrayList<String> maleNames;
+    private ArrayList<String> femaleNames;
+    private ArrayList<String> surnamesList;
 
     /**
      * Constructs a new PersonDAO object with the specified database connection.
@@ -33,9 +36,13 @@ public class PersonDao {
     public PersonDao(Connection conn) {
         this.conn = conn;
         try {
-            maleNames = deserializeFromNamesFile(new File("json/mnames.json"));
-            femaleNames = deserializeFromNamesFile(new File("json/fnames.json"));
-            surnames = deserializeFromNamesFile(new File("json/snames.json"));
+            Names males = deserializeNameList(new File("json/mnames.json"));
+            Names females = deserializeNameList(new File("json/fnames.json"));
+            Names surnames = deserializeNameList(new File("json/snames.json"));
+
+            maleNames = new ArrayList<String>(Arrays.asList(males.getNames()));
+            femaleNames = new ArrayList<String>(Arrays.asList(females.getNames()));
+            surnamesList = new ArrayList<String>(Arrays.asList(surnames.getNames()));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -113,6 +120,18 @@ public class PersonDao {
         }
     }
 
+    public void clearPerson(String username) throws DataAccessException {
+        String sql = "DELETE FROM Persons WHERE associatedUsername = ?;";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            // Remove person based on given username
+            stmt.setString(1, username);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataAccessException("Error encountered while clearing the person table");
+        }
+    }
+
     public void generateTree(User user, String personID, int numGenerations, EventDao eventDao) throws DataAccessException {
         int birthYear = 1995;
 
@@ -138,7 +157,7 @@ public class PersonDao {
 
         String fatherName = getRandomName(maleNames);
         String motherName = getRandomName(femaleNames);
-        String motherLastName = getRandomName(surnames);
+        String motherLastName = getRandomName(surnamesList);
 
         Person father = new Person(fatherID, username, fatherName, fatherLastName, "m", null, null, motherID);
         Person mother = new Person(motherID, username, motherName, motherLastName, "f", null, null, fatherID);
@@ -174,6 +193,73 @@ public class PersonDao {
             throw new DataAccessException("Error encountered while inserting user's motherID");
         }
     }
+
+    public Person[] getPersonsForUsername(String username) throws DataAccessException {
+        ArrayList<Person> persons = new ArrayList<Person>();
+
+        ResultSet rs = null;
+        String sql = "SELECT * FROM Persons WHERE associatedUsername = ?;";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Person person = new Person(rs.getString("personID"),
+                        rs.getString("associatedUsername"),
+                        rs.getString("firstName"),
+                        rs.getString("lastName"),
+                        rs.getString("gender"),
+                        rs.getString("fatherID"),
+                        rs.getString("motherID"),
+                        rs.getString("spouseID"));
+
+                persons.add(person);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataAccessException("Error encountered while finding persons for the username given");
+        } finally {
+            if(rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        Person[] list = persons.toArray(new Person[persons.size()]);
+        return list;
+    }
+
+    public boolean personExists(String personID) throws DataAccessException {
+        ResultSet rs = null;
+        String sql = "SELECT * FROM Persons WHERE personID = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, personID);
+            rs = stmt.executeQuery();
+
+            if (!rs.next()) {
+                return false;
+            }
+
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
 
     public void insertFatherID(String userID, String fatherID) throws DataAccessException {
         String sql = "UPDATE Persons SET fatherID = ? WHERE personID = ?;";

@@ -26,13 +26,13 @@ public class PersonHandler extends Handler implements HttpHandler {
                     String[] paths = exchange.getRequestURI().getPath().split("/");
 
                     switch (paths.length) {
-                        case 1:
-                            personsAllResult = personsAllService.getAllPersons(authID);
+                        case 2:
+                            personsAllResult = personsAllService.getPersons(authID);
                             sendResponse(exchange, personsAllResult);
                             parseResponse(exchange, personsAllResult);
                             break;
-                        case 2:
-                            personIDResult = personIDService.getPersonByID(paths[1], authID);
+                        case 3:
+                            personIDResult = personIDService.getPerson(paths[2], authID);
                             sendResponse(exchange, personIDResult);
                             parseResponse(exchange, personIDResult);
                             break;

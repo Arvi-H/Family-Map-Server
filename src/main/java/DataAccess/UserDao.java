@@ -78,6 +78,35 @@ public class UserDao {
         }
     }
 
+    public boolean userExists(String username) throws DataAccessException {
+
+        ResultSet rs = null;
+        String sql = "SELECT * FROM Users WHERE username = ?;";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            rs = stmt.executeQuery();
+
+            if (!rs.next())
+                return false;
+            else
+                return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+
     /**
      * Clears all User objects from the database.
      * @throws DataAccessException if an error occurs during database access.

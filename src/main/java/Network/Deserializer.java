@@ -1,13 +1,12 @@
 package Network;
 
 import JSONData.Location;
+import JSONData.Locations;
+import JSONData.Names;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 
 public class Deserializer {
@@ -22,12 +21,26 @@ public class Deserializer {
             throw new IOException("Error while deserializing from file: " + e.getMessage());
         }
     }
-    public static ArrayList<Location> deserializeFromLocationFile(File file) throws IOException {
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            return (new Gson()).fromJson(reader, new TypeToken<ArrayList<Location>>(){}.getType());
+    public static Names deserializeNameList(File filename) throws IOException {
+        try (FileReader fileReader = new FileReader(filename);
+             BufferedReader bufferedReader = new BufferedReader(fileReader)) {
+
+            Gson gson = new Gson();
+            return gson.fromJson(bufferedReader, Names.class);
         } catch (IOException e) {
-            throw new IOException("Error while deserializing from file: " + e.getMessage());
+            e.printStackTrace();
+            throw new IOException();
         }
     }
+    public static Locations deserializeLocationsList(File filename) throws IOException {
+        try (FileReader fileReader = new FileReader(filename);
+             BufferedReader bufferedReader = new BufferedReader(fileReader)) {
 
+            Gson gson = new Gson();
+            return gson.fromJson(bufferedReader, Locations.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new IOException();
+        }
+    }
 }

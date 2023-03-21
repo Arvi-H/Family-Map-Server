@@ -22,16 +22,6 @@ public class RegisterResult extends Result{
     private String personID;
 
     /**
-     * Whether the registration was successful
-     */
-    private boolean success;
-
-    /**
-     * A message indicating the result of the registration attempt
-     */
-    private String message;
-
-    /**
      * Constructs a new RegisterResult object with the given parameters.
      *
      * @param auth_token the authentication token generated for the user
@@ -45,6 +35,11 @@ public class RegisterResult extends Result{
     }
 
     public RegisterResult() {}
+
+    public RegisterResult(String message) {
+        super();
+    }
+
     public String getAuth_token() {
         return auth_token;
     }

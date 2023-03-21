@@ -9,8 +9,6 @@ import com.sun.net.httpserver.HttpHandler;
 
 import java.io.IOException;
 
-import static Network.Serializer.serialize;
-
 public class EventHandler extends Handler implements HttpHandler {
 
     @Override
@@ -28,13 +26,13 @@ public class EventHandler extends Handler implements HttpHandler {
                     String[] paths = exchange.getRequestURI().getPath().split("/");
 
                     switch (paths.length) {
-                        case 1:
+                        case 2:
                             eventsAllResult = eventAllService.getAllEvents(authID);
                             sendResponse(exchange, eventsAllResult);
                             parseResponse(exchange, eventsAllResult);
                             break;
-                        case 2:
-                            eventIDResult = eventIDService.getEventById(paths[1], authID);
+                        case 3:
+                            eventIDResult = eventIDService.getEventById(paths[2], authID);
                             sendResponse(exchange, eventIDResult);
                             parseResponse(exchange, eventIDResult);
                             break;

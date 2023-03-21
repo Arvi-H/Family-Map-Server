@@ -1,5 +1,9 @@
 package Service;
 
+import DataAccess.AuthTokenDao;
+import DataAccess.DataAccessException;
+import DataAccess.Database;
+import DataAccess.PersonDao;
 import Result.PersonsResult;
 
 /**
@@ -15,7 +19,32 @@ public class PersonsService {
         return null;
     }
 
-    public PersonsResult getAllPersons(String authID) {
-        return null;
+    public PersonsResult getPersons(String authToken) {
+
+        PersonsResult response = new PersonsResult();
+        Database db = new Database();
+        try {
+            db.openConnection();
+            AuthTokenDao tDao = new AuthTokenDao(db.getConnection());
+            PersonDao pDao = new PersonDao(db.getConnection());
+
+            if(tDao.authTokenExists(authToken)) {
+
+                String userName = tDao.authenticateString(authToken).getUsername();
+                response.setData(pDao.getPersonsForUsername(userName));
+
+                response.setSuccess(true);
+                db.closeConnection(true);
+            } else {
+                response.setSuccess(false);
+                response.setMessage("Error: Invalid auth token");
+                db.closeConnection(false);
+            }
+        } catch(DataAccessException e) {
+            response.setSuccess(false);
+            response.setMessage("Internal server error");
+            db.closeConnection(false);
+        }
+        return response;
     }
 }

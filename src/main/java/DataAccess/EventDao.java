@@ -1,16 +1,17 @@
 package DataAccess;
 
 import JSONData.Location;
+import JSONData.Locations;
 import Model.Event;
 
 import java.io.File;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
-import static Network.Deserializer.deserializeFromLocationFile;
-import static Network.Deserializer.deserializeFromNamesFile;
+import static Network.Deserializer.*;
 import static Network.RandomUUID.getRandomUUID;
 
 /**
@@ -21,7 +22,7 @@ public class EventDao {
     /** The database connection used for executing SQL queries. */
     private final Connection conn;
 
-    private ArrayList<Location> locations = new ArrayList<>();
+    private Locations locations;
     /**
      * Constructs a new EventDAO object with the specified database connection.
      * @param conn the database connection to use.
@@ -29,7 +30,7 @@ public class EventDao {
     public EventDao(Connection conn) {
         this.conn = conn;
         try {
-            locations = deserializeFromLocationFile(new File("json/locations.json"));
+            locations = deserializeLocationsList(new File("json/locations.json"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -108,8 +109,84 @@ public class EventDao {
         }
     }
 
-    public Location getRandomLocation(ArrayList<Location> locations) {
-        return locations.get(new Random().nextInt(locations.size()));
+    public void clearEvent(String username) throws DataAccessException {
+        String sql = "DELETE FROM Events WHERE associatedUsername = ?;";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            // Remove event based on given username
+            stmt.setString(1, username);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataAccessException("Error encountered while clearing the event table");
+        }
+    }
+
+    public Event[] findAllEvents(String userName) throws DataAccessException {
+        ArrayList<Event> events = new ArrayList<Event>();
+
+        ResultSet rs = null;
+        String sql = "SELECT * FROM Events WHERE associatedUsername = ?;";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, userName);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                Event event = new Event(rs.getString("EventID"), rs.getString("AssociatedUsername"),
+                        rs.getString("PersonID"), rs.getFloat("Latitude"), rs.getFloat("Longitude"),
+                        rs.getString("Country"), rs.getString("City"), rs.getString("EventType"),
+                        rs.getInt("Year"));
+
+                events.add(event);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataAccessException("Error encountered when finding all events for a person");
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        Event[] list = events.toArray(new Event[events.size()]);
+        return list;
+    }
+
+    public boolean eventExists(String eventID) throws DataAccessException {
+
+        ResultSet rs = null;
+        String sql = "SELECT * FROM Events WHERE eventID = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, eventID);
+            rs = stmt.executeQuery();
+
+            if (!rs.next())
+                return false;
+            else
+                return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public Location getRandomLocation(Locations locations) {
+        Location[] data = locations.getLocations();
+        int randomIndex = new Random().nextInt(data.length);
+        return data[randomIndex];
     }
 
     public void generateEvent(String associatedUsername, String personID, int year, String eventType) throws DataAccessException {

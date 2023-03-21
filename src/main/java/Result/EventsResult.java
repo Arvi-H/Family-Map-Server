@@ -1,5 +1,7 @@
 package Result;
 
+import Model.Event;
+
 /**
  * The result of a request to retrieve events from the database.
  */
@@ -7,17 +9,13 @@ public class EventsResult extends Result {
     /**
      * An array of events matching the request parameters.
      */
-    private EventsResult[] data;
-    /**
-     * A Boolean indicating whether the request was successful.
-     */
-    private boolean success;
+    private Event[] data;
 
     /**
      * Creates a new instance of the EventResult class.
      * @param data An array of events matching the request parameters.
      */
-    public EventsResult(EventsResult[] data) {
+    public EventsResult(Event[] data) {
         this.data = data;
     }
 
@@ -26,11 +24,11 @@ public class EventsResult extends Result {
      */
     public EventsResult() {}
 
-    public EventsResult[] getData() {
+    public Event[] getData() {
         return data;
     }
 
-    public void setData(EventsResult[] data) {
+    public void setData(Event[] data) {
         this.data = data;
     }
 }
