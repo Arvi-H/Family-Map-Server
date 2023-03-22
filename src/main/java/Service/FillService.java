@@ -7,7 +7,7 @@ import Result.FillResult;
 /**
  * Represents a service to generate data for a specified user account
  */
-public class FillService {
+public class FillService extends Service {
     /**
      * Generates data for the specified user account
      * @return A FillResult object containing the result of the operation
@@ -17,10 +17,8 @@ public class FillService {
         FillResult fillResult = new FillResult();
 
         try {
-            // Open Connection
             db.openConnection();
 
-            // Data Access Classes
             UserDao userDao = new UserDao(db.getConnection());
             PersonDao personDao = new PersonDao(db.getConnection());
             EventDao eventDao = new EventDao(db.getConnection());
@@ -28,40 +26,17 @@ public class FillService {
             if((userDao.find(username) != null) && generations >= 0) {
                 User user = userDao.find(username);
 
-                // Clear database
                 personDao.clearPerson(username);
                 eventDao.clearEvent(username);
 
-                if(generations == 99) {
-                    personDao.generateTree(user, user.getPersonID(), 4, eventDao);
-                } else {
-                    personDao.generateTree(user, user.getPersonID(), generations, eventDao);
-                }
+                personDao.generateTree(user, user.getPersonID(), (generations == 99 ? 4 : generations), eventDao);
 
-
-                int numOfPersons = personDao.getPersonCount();
-                int numOfEvents = eventDao.getNumOfEvents();
-
-                fillResult.setMessage("Successfully added " + numOfPersons + " persons and " + numOfEvents + " events to the database!");
-                fillResult.setSuccess(true);
-                db.closeConnection(true);
-
+                handleResponseAndCloseConnection(db, fillResult, "Successfully added " + personDao.getPersonCount() + " persons and " + eventDao.getNumOfEvents() + " events to the database!", true);
             } else {
-                fillResult.setSuccess(false);
-                fillResult.setMessage("Error: Invalid username.");
-                db.closeConnection(false);
-
+                handleResponseAndCloseConnection(db, fillResult, "Error: Invalid username.", false);
             }
         } catch(DataAccessException e) {
-
-            fillResult.setSuccess(false);
-            fillResult.setMessage("Internal server error - Fill Service");
-
-            try {
-                db.closeConnection(false);
-            } catch (Exception j) {
-                j.printStackTrace();
-            }
+            handleResponseAndCloseConnection(db, fillResult, "Error: Internal server", false);
         }
 
         return fillResult;
