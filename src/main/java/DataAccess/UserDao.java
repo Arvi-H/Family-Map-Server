@@ -50,6 +50,7 @@ public class UserDao {
             throw new DataAccessException("Error encountered while inserting an event into the database");
         }
     }
+
     /**
      * Finds a User object in the database by its token string.
      * @param username the unique username string to search for.
@@ -77,35 +78,6 @@ public class UserDao {
             throw new DataAccessException("Error encountered while finding a user in the database");
         }
     }
-
-    public boolean userExists(String username) throws DataAccessException {
-
-        ResultSet rs = null;
-        String sql = "SELECT * FROM Users WHERE username = ?;";
-
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, username);
-            rs = stmt.executeQuery();
-
-            if (!rs.next())
-                return false;
-            else
-                return true;
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
 
     /**
      * Clears all User objects from the database.

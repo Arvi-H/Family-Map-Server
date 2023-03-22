@@ -1,7 +1,5 @@
 package DataAccess;
 
-import Model.Event;
-
 import java.sql.*;
 
 public class Database {

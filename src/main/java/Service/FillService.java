@@ -26,8 +26,8 @@ public class FillService extends Service {
             if((userDao.find(username) != null) && generations >= 0) {
                 User user = userDao.find(username);
 
-                personDao.clearPerson(username);
-                eventDao.clearEvent(username);
+                personDao.clear(username);
+                eventDao.clear(username);
 
                 personDao.generateTree(user, user.getPersonID(), (generations == 99 ? 4 : generations), eventDao);
 

@@ -49,7 +49,7 @@ public class AuthTokenDao {
     public AuthToken find(String authToken) throws DataAccessException {
         AuthToken a;
         ResultSet rs;
-        String sql = "SELECT * FROM Authtokens WHERE username = ?;";
+        String sql = "SELECT * FROM Authtokens WHERE auth_token = ?;";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, authToken);
@@ -76,65 +76,6 @@ public class AuthTokenDao {
             stmt.executeUpdate(sql);
         } catch (SQLException e) {
             throw new DataAccessException("Error encountered when clearing authorization tokens table");
-        }
-    }
-    public AuthToken authenticateString(String auth) throws DataAccessException {
-        AuthToken token;
-        ResultSet rs = null;
-
-        String sql = "SELECT * FROM Authtokens WHERE auth_token = ?;";
-
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setString(1, auth);
-
-            rs = stmt.executeQuery();
-            if (rs.next()) {
-                token = new AuthToken(
-                        rs.getString("auth_token"),
-                        rs.getString("username"));
-
-                return token;
-            }
-        } catch (SQLException e) {
-            throw new DataAccessException("Error encountered while authenticating your token");
-        } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-
-        }
-        return null;
-    }
-
-    public boolean authTokenExists(String auth) throws DataAccessException {
-        ResultSet rs = null;
-        String sql = "SELECT * FROM Authtokens WHERE auth_token = ?;";
-
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, auth);
-            rs = stmt.executeQuery();
-
-            if (!rs.next()) {
-                return false;
-            } else {
-                return true;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
         }
     }
 

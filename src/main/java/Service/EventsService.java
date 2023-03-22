@@ -25,8 +25,8 @@ public class EventsService extends Service {
             AuthTokenDao authTokenDao = new AuthTokenDao(db.getConnection());
             EventDao eventDao = new EventDao(db.getConnection());
 
-            if (authTokenDao.authTokenExists(authid)) {
-                String userName = authTokenDao.authenticateString(authid).getUsername();
+            if (authTokenDao.find(authid) != null) {
+                String userName = authTokenDao.find(authid).getUsername();
                 eventsResult.setData(eventDao.findAllEvents(userName));
 
                 handleResponse(db, eventsResult, "GetAllEvents Succeeded.", true);

@@ -5,6 +5,7 @@ import DataAccess.Database;
 import DataAccess.UserDao;
 import Model.User;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -75,5 +76,13 @@ public class UserDaoTest {
 
         assertNotNull(tempPerson);
         assertNull(fakePerson);
+    }
+
+    @Test
+    public void testClear() throws DataAccessException {
+        User user = new User("arvih", "password", "testuser@example.com", "Test", "User", "m", "1234");
+        userDao.insert(user);
+        userDao.clear();
+        assertNull(userDao.find("arvih"), "User should not be found in the database after clear");
     }
 }

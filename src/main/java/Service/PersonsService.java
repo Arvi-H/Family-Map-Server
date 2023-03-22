@@ -25,9 +25,9 @@ public class PersonsService extends Service {
             AuthTokenDao authTokenDao = new AuthTokenDao(db.getConnection());
             PersonDao personDao = new PersonDao(db.getConnection());
 
-            if(authTokenDao.authTokenExists(authToken)) {
-                String userName = authTokenDao.authenticateString(authToken).getUsername();
-                personsResult.setData(personDao.getPersonsForUsername(userName));
+            if(authTokenDao.find(authToken) != null) {
+                String userName = authTokenDao.find(authToken).getUsername();
+                personsResult.setData(personDao.findAllPersons(userName));
 
                 handleResponse(db, personsResult, "GetAllPersons Succeeded.", true);
             } else {

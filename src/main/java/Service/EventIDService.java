@@ -25,8 +25,8 @@ public class EventIDService extends Service {
             AuthTokenDao authTokenDao = new AuthTokenDao(db.getConnection());
             EventDao eventDao = new EventDao(db.getConnection());
 
-            if (authTokenDao.authTokenExists(authToken)) {
-                String userName = authTokenDao.authenticateString(authToken).getUsername();
+            if (authTokenDao.find(authToken) != null) {
+                String userName = authTokenDao.find(authToken).getUsername();
                 Event event = eventDao.find(eventID);
 
                 if (event != null) {

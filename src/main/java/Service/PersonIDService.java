@@ -27,8 +27,8 @@ public class PersonIDService extends Service {
             AuthTokenDao authTokenDao = new AuthTokenDao(db.getConnection());
             PersonDao personDao = new PersonDao(db.getConnection());
 
-            if(authTokenDao.authTokenExists(authtoken)) {
-                String userName = authTokenDao.authenticateString(authtoken).getUsername();
+            if(authTokenDao.find(authtoken) != null) {
+                String userName = authTokenDao.find(authtoken).getUsername();
                 Person person = personDao.find(personID);
 
                 if(person != null) {
