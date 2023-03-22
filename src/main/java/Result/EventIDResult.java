@@ -70,6 +70,18 @@ public class EventIDResult extends Result {
      */
     public EventIDResult() {}
 
+    public void setEventIDResult(String associatedUsername, String eventID, String personID, float latitude, float longitude, String country, String city, String eventType, int year) {
+        this.associatedUsername = associatedUsername;
+        this.eventID = eventID;
+        this.personID = personID;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.country = country;
+        this.city = city;
+        this.eventType = eventType;
+        this.year = year;
+    }
+
     public String getAssociatedUsername() {
         return associatedUsername;
     }

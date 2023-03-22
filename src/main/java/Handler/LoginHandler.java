@@ -22,6 +22,7 @@ public class LoginHandler extends Handler implements HttpHandler {
                 parseResponse(exchange, loginResult);
             } else {
                 sendBadRequestResponse(exchange);
+
             }
             closeExchange(exchange);
         } catch (IOException e) {

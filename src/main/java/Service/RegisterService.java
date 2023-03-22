@@ -73,7 +73,7 @@ public class RegisterService {
                 }
             } else {
                 registerResult.setSuccess(false);
-                registerResult.setMessage("Error request missing properties - Register Service");
+                registerResult.setMessage("Error: Missing info");
                 db.closeConnection(false);
             }
         } catch (DataAccessException e) {

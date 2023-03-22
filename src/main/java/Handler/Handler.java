@@ -42,6 +42,10 @@ public abstract class Handler {
         exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
     }
 
+    protected void sendNotFoundResponse(HttpExchange exchange) throws IOException {
+        exchange.sendResponseHeaders(HttpURLConnection.HTTP_NOT_FOUND, 0);
+    }
+
     protected void sendOkResponse(HttpExchange exchange) throws IOException {
         exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
     }

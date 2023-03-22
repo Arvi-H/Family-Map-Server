@@ -6,7 +6,7 @@ package Result;
  */
 public class LoginResult extends Result {
     /** The authentication token. */
-    private String authToken;
+    private String authtoken;
 
     /** The username. */
     private String username;
@@ -21,7 +21,7 @@ public class LoginResult extends Result {
      * @param personID the person ID to set
      */
     public LoginResult(String authToken, String username, String personID, boolean success) {
-        this.authToken = authToken;
+        this.authtoken = authToken;
         this.username = username;
         this.personID = personID;
         this.success = success;
@@ -32,12 +32,12 @@ public class LoginResult extends Result {
      */
     public LoginResult() {}
 
-    public String getAuthToken() {
-        return authToken;
+    public String getAuthtoken() {
+        return authtoken;
     }
 
-    public void setAuthToken(String auth_token) {
-        this.authToken = auth_token;
+    public void setAuthtoken(String auth_token) {
+        this.authtoken = auth_token;
     }
 
     public String getUsername() {

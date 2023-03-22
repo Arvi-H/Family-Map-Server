@@ -38,14 +38,17 @@ public class FillService {
                     personDao.generateTree(user, user.getPersonID(), generations, eventDao);
                 }
 
-                fillResult.setMessage("Successfully added   persons and   events to the database!");
 
+                int numOfPersons = personDao.getPersonCount();
+                int numOfEvents = eventDao.getNumOfEvents();
+
+                fillResult.setMessage("Successfully added " + numOfPersons + " persons and " + numOfEvents + " events to the database!");
                 fillResult.setSuccess(true);
                 db.closeConnection(true);
 
             } else {
                 fillResult.setSuccess(false);
-                fillResult.setMessage("Error invalid username or generations - Fill Service");
+                fillResult.setMessage("Error: Invalid username.");
                 db.closeConnection(false);
 
             }

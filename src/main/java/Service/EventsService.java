@@ -4,12 +4,7 @@ import DataAccess.AuthTokenDao;
 import DataAccess.DataAccessException;
 import DataAccess.Database;
 import DataAccess.EventDao;
-import Model.AuthToken;
-import Model.Event;
 import Result.EventsResult;
-import passoffresult.EventResult;
-
-import java.util.List;
 
 /**
  * EventService class represents the service class for retrieving events for a user or all users.
@@ -39,12 +34,12 @@ public class EventsService {
 
             } else {
                 response.setSuccess(false);
-                response.setMessage("Error encountered when finding all events - Events Service");
+                response.setMessage("Error: Invalid AuthToken");
                 db.closeConnection(false);
             }
         } catch(DataAccessException e) {
             response.setSuccess(false);
-            response.setMessage("Internal server error - Events Service");
+            response.setMessage("Error: Internal server");
             db.closeConnection(false);
         }
 

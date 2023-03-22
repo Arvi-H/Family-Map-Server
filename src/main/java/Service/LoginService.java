@@ -53,7 +53,7 @@ public class LoginService {
             } else {
                 // Create a result from this service
                 loginResult = new LoginResult();
-                loginResult.setMessage("Invalid username or password");
+                loginResult.setMessage("Error: Invalid username or password");
                 loginResult.setSuccess(false);
 
                 // Rollback Changes
@@ -63,7 +63,7 @@ public class LoginService {
         } catch(DataAccessException e) {
             // Create a result from this service
             loginResult = new LoginResult();
-            loginResult.setMessage("Invalid username or password");
+            loginResult.setMessage("Error: Invalid username or password");
             loginResult.setSuccess(false);
 
             // Rollback Changes

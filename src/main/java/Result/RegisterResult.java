@@ -8,7 +8,7 @@ public class RegisterResult extends Result{
     /**
      * The authentication token generated for the user
      */
-    private String auth_token;
+    private String authtoken;
 
     /**
      * The username of the registered user
@@ -24,12 +24,12 @@ public class RegisterResult extends Result{
     /**
      * Constructs a new RegisterResult object with the given parameters.
      *
-     * @param auth_token the authentication token generated for the user
+     * @param authtoken the authentication token generated for the user
      * @param username the username of the registered user
      * @param personID the ID of the person associated with the registered user
      */
-    public RegisterResult(String auth_token, String username, String personID) {
-        this.auth_token = auth_token;
+    public RegisterResult(String authtoken, String username, String personID) {
+        this.authtoken = authtoken;
         this.username = username;
         this.personID = personID;
     }
@@ -41,11 +41,11 @@ public class RegisterResult extends Result{
     }
 
     public String getAuth_token() {
-        return auth_token;
+        return authtoken;
     }
 
     public void setAuth_token(String auth_token) {
-        this.auth_token = auth_token;
+        this.authtoken = auth_token;
     }
 
     public String getUsername() {

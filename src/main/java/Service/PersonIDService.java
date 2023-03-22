@@ -54,22 +54,22 @@ public class PersonIDService {
                         db.closeConnection(true);
                     } else {
                         response.setSuccess(false);
-                        response.setMessage("Error requesting this person - Person by Id Service");
+                        response.setMessage("Error: Person by Id Service");
                         db.closeConnection(false);
                     }
                 } else {
                     response.setSuccess(false);
-                    response.setMessage("Error person ID is not valid - Person by Id Service");
+                    response.setMessage("Error: Invalid PersonID");
                     db.closeConnection(false);
                 }
             } else {
                 response.setSuccess(false);
-                response.setMessage("Error check your token to see if valid - Person by Id Service");
+                response.setMessage("Error: Person by Id Service");
                 db.closeConnection(false);
             }
         } catch(DataAccessException e) {
             response.setSuccess(false);
-            response.setMessage("Internal server error - Person by Id Service");
+            response.setMessage("Error: Internal server");
             db.closeConnection(false);
         }
 

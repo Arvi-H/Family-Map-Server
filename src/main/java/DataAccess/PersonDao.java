@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
-import static Network.Deserializer.deserializeFromNamesFile;
 import static Network.Deserializer.deserializeNameList;
 import static Network.RandomUUID.getRandomUUID;
 
@@ -28,12 +27,13 @@ public class PersonDao {
     private ArrayList<String> maleNames;
     private ArrayList<String> femaleNames;
     private ArrayList<String> surnamesList;
-
+    private int numPersons;
     /**
      * Constructs a new PersonDAO object with the specified database connection.
      * @param conn the database connection to use.
      */
     public PersonDao(Connection conn) {
+        numPersons = 0;
         this.conn = conn;
         try {
             Names males = deserializeNameList(new File("json/mnames.json"));
@@ -75,6 +75,7 @@ public class PersonDao {
             e.printStackTrace();
             throw new DataAccessException("Error encountered while inserting an event into the database");
         }
+        numPersons++;
     }
 
     /**
@@ -275,4 +276,7 @@ public class PersonDao {
         }
     }
 
+    public int getPersonCount() {
+        return numPersons;
+    }
 }

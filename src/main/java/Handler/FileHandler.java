@@ -22,7 +22,7 @@ public class FileHandler extends Handler implements HttpHandler {
                     sendOkResponse(exchange);
                     Files.copy(file.toPath(), exchange.getResponseBody());
                 } else {
-                    sendBadRequestResponse(exchange);
+                    sendNotFoundResponse(exchange);
                     Files.copy(notFoundFile.toPath(), exchange.getResponseBody());
                 }
                 exchange.close();

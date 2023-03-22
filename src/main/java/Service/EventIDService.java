@@ -10,71 +10,42 @@ import Result.EventIDResult;
 /**
  * This class provides a service for retrieving an event by its ID.
  */
-public class EventIDService {
+public class EventIDService extends Service {
     /**
      * Retrieves an event by its ID.
-     *
      * @return An EventIDResult object indicating the success or failure of the operation, as well as the retrieved event data.
      */
-    EventIDResult event() {
-        return null;
-    }
-
     public EventIDResult getEventById(String eventID, String authToken) {
-
-        EventIDResult response = new EventIDResult();
-
-
         Database db = new Database();
+        EventIDResult eventIDResult = new EventIDResult();
+
         try {
             db.openConnection();
 
-            AuthTokenDao tDao = new AuthTokenDao(db.getConnection());
-            EventDao eDao = new EventDao(db.getConnection());
+            AuthTokenDao authTokenDao = new AuthTokenDao(db.getConnection());
+            EventDao eventDao = new EventDao(db.getConnection());
 
-            if (tDao.authTokenExists(authToken)) {
+            if (authTokenDao.authTokenExists(authToken)) {
+                String userName = authTokenDao.authenticateString(authToken).getUsername();
 
-                String userName = tDao.authenticateString(authToken).getUsername(); // get associated username for Event
+                if (eventDao.eventExists(eventID)) {
+                    Event event = eventDao.find(eventID);
 
-                if (eDao.eventExists(eventID)) { // check if event exists by its ID
-
-                    Event event = eDao.find(eventID); // find event by ID
-                    String eventUsername = event.getAssociatedUsername(); // user associated with event
-
-                    if (userName.equals(eventUsername)) { // if logged user is the owner of the new event
-
-                        response.setEventID(event.getEventID());
-                        response.setAssociatedUsername(event.getAssociatedUsername());
-                        response.setLatitude(event.getLatitude());
-                        response.setLongitude(event.getLongitude());
-                        response.setCountry(event.getCountry());
-                        response.setCity(event.getCity());
-                        response.setEventType(event.getEventType());
-                        response.setYear(event.getYear());
-                        response.setPersonID(event.getPersonID());
-
-                        response.setSuccess(true);
-                        db.closeConnection(true);
+                    if (userName.equals(event.getAssociatedUsername())) {
+                        eventIDResult.setEventIDResult(event.getAssociatedUsername(), event.getEventID(), event.getPersonID(), event.getLatitude(), event.getLongitude(), event.getCountry(), event.getCity(), event.getEventType(), event.getYear());
+                        handleResponseAndCloseConnection(db, eventIDResult, "GetEventById succeeded.", true);
                     } else {
-                        response.setSuccess(false);
-                        response.setMessage("Error requesting an by user - Event By Id Service");
-                        db.closeConnection(false);
+                        handleResponseAndCloseConnection(db, eventIDResult, "Error: requesting an by user", false);
                     }
                 } else {
-                    response.setSuccess(false);
-                    response.setMessage("Error invalid eventID - Event by Id Service");
-                    db.closeConnection(false);
+                    handleResponseAndCloseConnection(db, eventIDResult, "Error: Invalid eventID", false);
                 }
             } else {
-                response.setSuccess(false);
-                response.setMessage("Error - Event by Id Service");
-                db.closeConnection(false);
+                handleResponseAndCloseConnection(db, eventIDResult, "Error: Invalid auth token", false);
             }
         } catch (DataAccessException e) {
-            response.setSuccess(false);
-            response.setMessage("Internal server error - Event by Id Service");
-            db.closeConnection(false);
+            handleResponseAndCloseConnection(db, eventIDResult, "Error: Internal server", false);
         }
-        return response;
+        return eventIDResult;
     }
 }

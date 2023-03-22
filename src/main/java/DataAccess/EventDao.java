@@ -23,11 +23,13 @@ public class EventDao {
     private final Connection conn;
 
     private Locations locations;
+    private int eventCount;
     /**
      * Constructs a new EventDAO object with the specified database connection.
      * @param conn the database connection to use.
      */
     public EventDao(Connection conn) {
+        eventCount = 0;
         this.conn = conn;
         try {
             locations = deserializeLocationsList(new File("json/locations.json"));
@@ -65,6 +67,7 @@ public class EventDao {
             e.printStackTrace();
             throw new DataAccessException("Error encountered while inserting an event into the database");
         }
+        eventCount++;
     }
 
     /**
@@ -194,17 +197,27 @@ public class EventDao {
         Event event = new Event(getRandomUUID(), associatedUsername, personID, location.getLatitude(), location.getLongitude(), location.getCountry(), location.getCity(), eventType, year);
         insert(event);
     }
+    public void generateMarriageEvent(String associatedUsername, int year, String eventType, String fatherID, String motherID) throws DataAccessException {
+        Location location = getRandomLocation(locations);
+        Event event = new Event(getRandomUUID(), associatedUsername, motherID, location.getLatitude(), location.getLongitude(), location.getCountry(), location.getCity(), eventType, year);
+        Event event2 = new Event(getRandomUUID(), associatedUsername, fatherID, location.getLatitude(), location.getLongitude(), location.getCountry(), location.getCity(), eventType, year);
+        insert(event);
+        insert(event2);
+    }
 
     public void generateBirth(String associatedUsername, String personID, int year) throws DataAccessException {
         generateEvent(associatedUsername, personID, year, "birth");
     }
 
     public void generateMarriage(String associatedUsername, String fatherID, String motherID, int year) throws DataAccessException {
-        generateEvent(associatedUsername, fatherID, (year-5), "marriage");
-        generateEvent(associatedUsername, motherID, (year-5), "marriage");
+        generateMarriageEvent(associatedUsername, (year-5), "marriage", fatherID, motherID);
     }
 
     public void generateDeath(String associatedUsername, String personID, int year) throws DataAccessException {
         generateEvent(associatedUsername, personID, (year+65), "death");
+    }
+
+    public int getNumOfEvents() {
+        return eventCount;
     }
 }
