@@ -52,7 +52,6 @@ public class Person {
      * @param spouseID the person ID of the person's spouse
      */
     public Person(String personID, String associatedUsername, String firstName, String lastName, String gender, String fatherID, String motherID, String spouseID) {
-//        this.personID = personID == null ? UUID.randomUUID().toString() : personID;
         this.personID = personID;
         this.associatedUsername = associatedUsername;
         this.firstName = firstName;
@@ -80,10 +79,6 @@ public class Person {
         return associatedUsername;
     }
 
-    public void setAssociatedUsername(String associatedUsername) {
-        this.associatedUsername = associatedUsername;
-    }
-
     public String getFirstName() {
         return firstName;
     }
@@ -104,32 +99,16 @@ public class Person {
         return gender;
     }
 
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
     public String getMotherID() {
         return motherID;
-    }
-
-    public void setMotherID(String motherID) {
-        this.motherID = motherID;
     }
 
     public String getFatherID() {
         return fatherID;
     }
 
-    public void setFatherID(String fatherID) {
-        this.fatherID = fatherID;
-    }
-
     public String getSpouseID() {
         return spouseID;
-    }
-
-    public void setSpouseID(String spouseID) {
-        this.spouseID = spouseID;
     }
 
     @Override

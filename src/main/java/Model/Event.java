@@ -13,8 +13,7 @@ public class Event {
     private String eventType;
     private Integer year;
 
-    public Event(String eventID, String username, String personID, Float latitude, Float longitude,
-                 String country, String city, String eventType, Integer year) {
+    public Event(String eventID, String username, String personID, Float latitude, Float longitude, String country, String city, String eventType, Integer year) {
         this.eventID = eventID;
         this.associatedUsername = username;
         this.personID = personID;
@@ -30,16 +29,8 @@ public class Event {
         return eventID;
     }
 
-    public void setEventID(String eventID) {
-        this.eventID = eventID;
-    }
-
     public String getAssociatedUsername() {
         return associatedUsername;
-    }
-
-    public void setAssociatedUsername(String associatedUsername) {
-        this.associatedUsername = associatedUsername;
     }
 
     public String getPersonID() {
@@ -54,48 +45,24 @@ public class Event {
         return latitude;
     }
 
-    public void setLatitude(Float latitude) {
-        this.latitude = latitude;
-    }
-
     public Float getLongitude() {
         return longitude;
-    }
-
-    public void setLongitude(Float longitude) {
-        this.longitude = longitude;
     }
 
     public String getCountry() {
         return country;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
     public String getCity() {
         return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
     }
 
     public String getEventType() {
         return eventType;
     }
 
-    public void setEventType(String eventType) {
-        this.eventType = eventType;
-    }
-
     public Integer getYear() {
         return year;
-    }
-
-    public void setYear(Integer year) {
-        this.year = year;
     }
 
     @Override

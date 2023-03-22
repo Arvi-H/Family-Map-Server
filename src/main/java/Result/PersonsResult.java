@@ -11,15 +11,6 @@ public class PersonsResult extends Result {
     private Person[] data;
 
     /**
-     * Constructs a new PersonResult object with the specified data, message, and success flag.
-     *
-     * @param data an array of PersonResult objects representing the requested persons.
-     */
-    public PersonsResult(Person[] data) {
-        this.data = data;
-    }
-
-    /**
      * Constructs a new, empty PersonResult object.
      */
     public PersonsResult() {}

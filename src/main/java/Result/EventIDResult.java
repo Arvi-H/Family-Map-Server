@@ -42,7 +42,11 @@ public class EventIDResult extends Result {
     private int year;
 
     /**
-     * Constructor for creating a new EventIDResult object with all fields set
+     * Empty constructor for creating a new EventIDResult object with no fields set
+     */
+    public EventIDResult() {}
+
+    /**
      * @param associatedUsername the username of the user account this event belongs to
      * @param eventID the unique ID of the event
      * @param personID the person ID associated with this event
@@ -53,23 +57,6 @@ public class EventIDResult extends Result {
      * @param eventType the type of event
      * @param year the year of the event
      */
-    public EventIDResult(String associatedUsername, String eventID, String personID, float latitude, float longitude, String country, String city, String eventType, int year) {
-        this.associatedUsername = associatedUsername;
-        this.eventID = eventID;
-        this.personID = personID;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.country = country;
-        this.city = city;
-        this.eventType = eventType;
-        this.year = year;
-    }
-
-    /**
-     * Empty constructor for creating a new EventIDResult object with no fields set
-     */
-    public EventIDResult() {}
-
     public void setEventIDResult(String associatedUsername, String eventID, String personID, float latitude, float longitude, String country, String city, String eventType, int year) {
         this.associatedUsername = associatedUsername;
         this.eventID = eventID;

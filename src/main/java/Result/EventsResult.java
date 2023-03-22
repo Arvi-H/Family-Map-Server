@@ -12,14 +12,6 @@ public class EventsResult extends Result {
     private Event[] data;
 
     /**
-     * Creates a new instance of the EventResult class.
-     * @param data An array of events matching the request parameters.
-     */
-    public EventsResult(Event[] data) {
-        this.data = data;
-    }
-
-    /**
      * Creates a new, empty instance of the EventResult class.
      */
     public EventsResult() {}

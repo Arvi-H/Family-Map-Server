@@ -15,23 +15,15 @@ public class LoginResult extends Result {
     private String personID;
 
     /**
-     * Constructs a new LoginResult object.
-     * @param authToken the authentication token to set
-     * @param username the username to set
-     * @param personID the person ID to set
-     */
-    public LoginResult(String authToken, String username, String personID, boolean success) {
-        this.authtoken = authToken;
-        this.username = username;
-        this.personID = personID;
-        this.success = success;
-    }
-
-    /**
      * Constructs an empty LoginResult object.
      */
     public LoginResult() {}
 
+    /**
+     * @param authToken the authentication token to set
+     * @param username the username to set
+     * @param personID the person ID to set
+     */
     public void setLoginResult(String authToken, String username, String personID) {
         this.authtoken = authToken;
         this.username = username;

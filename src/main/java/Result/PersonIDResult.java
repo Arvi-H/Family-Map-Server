@@ -38,32 +38,17 @@ public class PersonIDResult extends Result {
     private String spouseID;
 
     /**
-     Constructs a PersonIDResult object with the specified parameters.
+     Constructs an empty PersonIDResult object.
+     */
+    public PersonIDResult() {}
+
+    /**
      @param associatedUsername The associated username for the person.
      @param personID The ID of the person.
      @param firstName The first name of the person.
      @param lastName The last name of the person.
      @param gender The gender of the person.
-     @param fatherID The ID of the person's father.
-     @param motherID The ID of the person's mother.
-     @param spouseID The ID of the person's spouse.
      */
-    public PersonIDResult(String associatedUsername, String personID, String firstName, String lastName, String gender, String fatherID, String motherID, String spouseID) {
-        this.associatedUsername = associatedUsername;
-        this.personID = personID;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.gender = gender;
-        this.fatherID = fatherID;
-        this.motherID = motherID;
-        this.spouseID = spouseID;
-    }
-
-    /**
-     Constructs an empty PersonIDResult object.
-     */
-    public PersonIDResult() {}
-
     public void setPersonIDResult(String associatedUsername, String personID, String firstName, String lastName, String gender) {
         this.associatedUsername = associatedUsername;
         this.personID = personID;

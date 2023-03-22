@@ -88,9 +88,7 @@ public class User {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
+    public void setFirstName(String firstName) {this.firstName = firstName;}
 
     public String getLastName() {
         return lastName;
@@ -104,9 +102,7 @@ public class User {
         return gender;
     }
 
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
+    public void setGender(String gender) {this.gender = gender;}
 
     public String getPersonID() {
         return personID;

@@ -14,26 +14,16 @@ public class FillHandler extends Handler implements HttpHandler {
         try {
             if (isPOSTRequest(exchange)) {
                 FillService fillService = new FillService();
-                FillResult fillResult = new FillResult();
-
-//                String url = exchange.getRequestURI().toString();
-//                String[] path = url.split("/");
-//
-//                String username = path[1];
-//                int generations = path.length > 2 ? Integer.parseInt(path[2]) : 99;
+                FillResult fillResult;
 
                 String uri = exchange.getRequestURI().toString();
                 StringBuilder url = new StringBuilder(uri);
                 url.deleteCharAt(0);
+
                 String[] path = url.toString().split("/");
-
                 String username = path[1];
-                int generations = 99;
 
-                if(path.length == 3) {
-                    generations = Integer.parseInt(path[2]);
-                }
-
+                int generations = path.length == 3 ? Integer.parseInt(path[2]) : 99;
                 fillResult = fillService.fill(username, generations);
 
                 sendResponse(exchange, fillResult);

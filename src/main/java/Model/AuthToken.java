@@ -22,12 +22,7 @@ public class AuthToken {
     public AuthToken(String authtoken, String username) {
         this.authtoken = authtoken;
         this.username = username;
-    }
-
-    /**
-     * Constructs a new empty AuthToken object.
-     */
-    public AuthToken() {}
+    } 
 
     public String getAuthtoken() {
         return authtoken;
