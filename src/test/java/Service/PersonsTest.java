@@ -4,7 +4,6 @@ import DataAccess.DataAccessException;
 import Model.Person;
 import Model.User;
 import Request.RegisterRequest;
-import Result.EventsResult;
 import Result.PersonsResult;
 import Result.RegisterResult;
 import org.junit.jupiter.api.AfterEach;
@@ -12,7 +11,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
-import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -43,7 +41,7 @@ class PersonsTest {
         String authToken = response.getAuth_token();
 
         fillService.fill(user.getUsername(), 4);
-        PersonsResult responsePersons = personsService.getPersons(authToken);
+        PersonsResult responsePersons = personsService.getAllPersons(authToken);
         Person[] persons = responsePersons.getData();
         assertEquals(persons.length, 31);
     }
@@ -51,7 +49,7 @@ class PersonsTest {
     @Test
     void testGetAllPersonsInvalidAuthToken() throws DataAccessException, SQLException {
         // Attempt to get persons with an invalid auth token
-        PersonsResult responsePersons = personsService.getPersons("invalidAuthToken");
+        PersonsResult responsePersons = personsService.getAllPersons("invalidAuthToken");
         // Check that an error message is returned
         assertNotNull(responsePersons.getMessage());
     }

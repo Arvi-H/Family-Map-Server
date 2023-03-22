@@ -36,6 +36,11 @@ public class RegisterResult extends Result{
 
     public RegisterResult() {}
 
+    public void setRegisterResult(String authtoken, String username, String personID) {
+        this.authtoken = authtoken;
+        this.username = username;
+        this.personID = personID;
+    }
     public RegisterResult(String message) {
         super();
     }

@@ -64,6 +64,14 @@ public class PersonIDResult extends Result {
      */
     public PersonIDResult() {}
 
+    public void setPersonIDResult(String associatedUsername, String personID, String firstName, String lastName, String gender) {
+        this.associatedUsername = associatedUsername;
+        this.personID = personID;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+    }
+
     public String getAssociatedUsername() {
         return associatedUsername;
     }

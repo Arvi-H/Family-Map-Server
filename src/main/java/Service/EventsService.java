@@ -29,12 +29,12 @@ public class EventsService extends Service {
                 String userName = authTokenDao.authenticateString(authid).getUsername();
                 eventsResult.setData(eventDao.findAllEvents(userName));
 
-                handleResponseAndCloseConnection(db, eventsResult, "GetAllEvents Succeeded.", true);
+                handleResponse(db, eventsResult, "GetAllEvents Succeeded.", true);
             } else {
-                handleResponseAndCloseConnection(db, eventsResult, "Error: Invalid AuthToken", false);
+                handleResponse(db, eventsResult, "Error: Invalid AuthToken", false);
             }
         } catch(DataAccessException e) {
-            handleResponseAndCloseConnection(db, eventsResult, "Error: Internal server", false);
+            handleResponse(db, eventsResult, "Error: Internal server", false);
         }
 
         return eventsResult;

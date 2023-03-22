@@ -10,41 +10,32 @@ import Result.PersonsResult;
  * The PersonService class handles retrieving information about people from
  * the database and returning it in a PersonResult object.
  */
-public class PersonsService {
+public class PersonsService extends Service {
     /**
      * Returns the result of a request to retrieve person data for the current user.
      * @return PersonResult object containing either an array of Person objects or an error message.
      */
-    PersonsResult person() {
-        return null;
-    }
-
-    public PersonsResult getPersons(String authToken) {
-
-        PersonsResult response = new PersonsResult();
+    public PersonsResult getAllPersons(String authToken) {
         Database db = new Database();
+        PersonsResult personsResult = new PersonsResult();
+
         try {
             db.openConnection();
-            AuthTokenDao tDao = new AuthTokenDao(db.getConnection());
-            PersonDao pDao = new PersonDao(db.getConnection());
 
-            if(tDao.authTokenExists(authToken)) {
+            AuthTokenDao authTokenDao = new AuthTokenDao(db.getConnection());
+            PersonDao personDao = new PersonDao(db.getConnection());
 
-                String userName = tDao.authenticateString(authToken).getUsername();
-                response.setData(pDao.getPersonsForUsername(userName));
+            if(authTokenDao.authTokenExists(authToken)) {
+                String userName = authTokenDao.authenticateString(authToken).getUsername();
+                personsResult.setData(personDao.getPersonsForUsername(userName));
 
-                response.setSuccess(true);
-                db.closeConnection(true);
+                handleResponse(db, personsResult, "GetAllPersons Succeeded.", true);
             } else {
-                response.setSuccess(false);
-                response.setMessage("Error: Invalid auth token");
-                db.closeConnection(false);
+                handleResponse(db, personsResult, "Error: Invalid auth token", false);
             }
         } catch(DataAccessException e) {
-            response.setSuccess(false);
-            response.setMessage("Internal server error");
-            db.closeConnection(false);
+            handleResponse(db, personsResult, "Error: Internal Server", false);
         }
-        return response;
+        return personsResult;
     }
 }

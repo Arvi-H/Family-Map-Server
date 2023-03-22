@@ -27,24 +27,23 @@ public class EventIDService extends Service {
 
             if (authTokenDao.authTokenExists(authToken)) {
                 String userName = authTokenDao.authenticateString(authToken).getUsername();
+                Event event = eventDao.find(eventID);
 
-                if (eventDao.eventExists(eventID)) {
-                    Event event = eventDao.find(eventID);
-
+                if (event != null) {
                     if (userName.equals(event.getAssociatedUsername())) {
                         eventIDResult.setEventIDResult(event.getAssociatedUsername(), event.getEventID(), event.getPersonID(), event.getLatitude(), event.getLongitude(), event.getCountry(), event.getCity(), event.getEventType(), event.getYear());
-                        handleResponseAndCloseConnection(db, eventIDResult, "GetEventById succeeded.", true);
+                        handleResponse(db, eventIDResult, "GetEventById succeeded.", true);
                     } else {
-                        handleResponseAndCloseConnection(db, eventIDResult, "Error: requesting an by user", false);
+                        handleResponse(db, eventIDResult, "Error: requesting an by user", false);
                     }
                 } else {
-                    handleResponseAndCloseConnection(db, eventIDResult, "Error: Invalid eventID", false);
+                    handleResponse(db, eventIDResult, "Error: Invalid eventID", false);
                 }
             } else {
-                handleResponseAndCloseConnection(db, eventIDResult, "Error: Invalid auth token", false);
+                handleResponse(db, eventIDResult, "Error: Invalid auth token", false);
             }
         } catch (DataAccessException e) {
-            handleResponseAndCloseConnection(db, eventIDResult, "Error: Internal server", false);
+            handleResponse(db, eventIDResult, "Error: Internal server", false);
         }
         return eventIDResult;
     }

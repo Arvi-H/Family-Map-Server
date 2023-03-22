@@ -31,12 +31,12 @@ public class FillService extends Service {
 
                 personDao.generateTree(user, user.getPersonID(), (generations == 99 ? 4 : generations), eventDao);
 
-                handleResponseAndCloseConnection(db, fillResult, "Successfully added " + personDao.getPersonCount() + " persons and " + eventDao.getNumOfEvents() + " events to the database!", true);
+                handleResponse(db, fillResult, "Successfully added " + personDao.getPersonCount() + " persons and " + eventDao.getNumOfEvents() + " events to the database!", true);
             } else {
-                handleResponseAndCloseConnection(db, fillResult, "Error: Invalid username.", false);
+                handleResponse(db, fillResult, "Error: Invalid username.", false);
             }
         } catch(DataAccessException e) {
-            handleResponseAndCloseConnection(db, fillResult, "Error: Internal server", false);
+            handleResponse(db, fillResult, "Error: Internal server", false);
         }
 
         return fillResult;

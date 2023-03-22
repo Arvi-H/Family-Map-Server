@@ -1,7 +1,6 @@
 package Service;
 
 import DataAccess.DataAccessException;
-import Model.Event;
 import Model.Person;
 import Model.User;
 import Request.RegisterRequest;
@@ -44,11 +43,11 @@ class PersonIDTest {
 
         fillService.fill(user.getUsername(), 4);
 
-        PersonsResult responsePersons = personsService.getPersons(authToken);
+        PersonsResult responsePersons = personsService.getAllPersons(authToken);
         Person[] persons = responsePersons.getData();
 
         String randomID = persons[new Random().nextInt(30)].getPersonID();
-        PersonIDResult responseID = personIDService.getPerson(randomID, authToken);
+        PersonIDResult responseID = personIDService.getPersonById(randomID, authToken);
 
         assertEquals(responseID.getPersonID(), randomID);
     }
@@ -61,7 +60,7 @@ class PersonIDTest {
         String authToken = registerResult.getAuth_token();
 
         fillService.fill(user.getUsername(), 0);
-        PersonIDResult resID = personIDService.getPerson(user.getPersonID(), authToken);
+        PersonIDResult resID = personIDService.getPersonById(user.getPersonID(), authToken);
 
         assertNull(resID.getPersonID());
     }

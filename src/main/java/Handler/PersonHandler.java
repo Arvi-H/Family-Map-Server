@@ -27,12 +27,12 @@ public class PersonHandler extends Handler implements HttpHandler {
 
                     switch (paths.length) {
                         case 2:
-                            personsAllResult = personsAllService.getPersons(authID);
+                            personsAllResult = personsAllService.getAllPersons(authID);
                             sendResponse(exchange, personsAllResult);
                             parseResponse(exchange, personsAllResult);
                             break;
                         case 3:
-                            personIDResult = personIDService.getPerson(paths[2], authID);
+                            personIDResult = personIDService.getPersonById(paths[2], authID);
                             sendResponse(exchange, personIDResult);
                             parseResponse(exchange, personIDResult);
                             break;

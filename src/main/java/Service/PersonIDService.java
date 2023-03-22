@@ -11,68 +11,48 @@ import Result.PersonIDResult;
  * The PersonIDService class is responsible for generating a unique person ID for a new user
  * when they register on the family map server.
  */
-public class PersonIDService {
+public class PersonIDService extends Service {
     /**
      * This method generates a unique person ID for a new user when they register on the family map server.
      * @return the PersonIDResult object containing the generated person ID and a success status flag.
      */
-    PersonIDResult personID() {
-        return null;
-    }
+    public PersonIDResult getPersonById(String personID, String authtoken) throws DataAccessException {
 
-    public PersonIDResult getPerson(String personID, String authtoken) throws DataAccessException {
-
-        PersonIDResult response = new PersonIDResult();
+        PersonIDResult personIDResult = new PersonIDResult();
         Database db = new Database();
 
         try {
             db.openConnection();
 
-            AuthTokenDao tDao = new AuthTokenDao(db.getConnection());
-            PersonDao pDao = new PersonDao(db.getConnection());
+            AuthTokenDao authTokenDao = new AuthTokenDao(db.getConnection());
+            PersonDao personDao = new PersonDao(db.getConnection());
 
-            if(tDao.authTokenExists(authtoken)) {
+            if(authTokenDao.authTokenExists(authtoken)) {
+                String userName = authTokenDao.authenticateString(authtoken).getUsername();
+                Person person = personDao.find(personID);
 
-                String userName = tDao.authenticateString(authtoken).getUsername();
+                if(person != null) {
+                    if(userName.equals(person.getAssociatedUsername())) {
+                        personIDResult.setPersonIDResult(person.getAssociatedUsername(), person.getPersonID(), person.getFirstName(), person.getLastName(), person.getGender());
 
-                if(pDao.find(personID) != null) {
+                        if(person.getFatherID() != null) { personIDResult.setFatherID(person.getFatherID()); }
+                        if(person.getMotherID() != null) { personIDResult.setMotherID(person.getMotherID()); }
+                        if(person.getSpouseID() != null) { personIDResult.setSpouseID(person.getSpouseID()); }
 
-                    Person person = pDao.find(personID);
-                    String personUsername = person.getAssociatedUsername();
-
-                    if(userName.equals(personUsername)) {
-                        response.setAssociatedUsername(person.getAssociatedUsername());
-                        response.setPersonID(person.getPersonID());
-                        response.setFirstName(person.getFirstName());
-                        response.setLastName(person.getLastName());
-                        response.setGender(person.getGender());
-                        if(person.getFatherID() != null) { response.setFatherID(person.getFatherID()); }
-                        if(person.getMotherID() != null) { response.setMotherID(person.getMotherID()); }
-                        if(person.getSpouseID() != null) { response.setSpouseID(person.getSpouseID()); }
-
-                        response.setSuccess(true);
-                        db.closeConnection(true);
+                        handleResponse(db, personIDResult, "GetPersonById Succeeded.", true);
                     } else {
-                        response.setSuccess(false);
-                        response.setMessage("Error: Person by Id Service");
-                        db.closeConnection(false);
+                        handleResponse(db, personIDResult, "Error: PersonId Service Failed", false);
                     }
                 } else {
-                    response.setSuccess(false);
-                    response.setMessage("Error: Invalid PersonID");
-                    db.closeConnection(false);
+                    handleResponse(db, personIDResult, "Error: Invalid PersonID", false);
                 }
             } else {
-                response.setSuccess(false);
-                response.setMessage("Error: Person by Id Service");
-                db.closeConnection(false);
+                handleResponse(db, personIDResult, "Error: Person by Id Service", false);
             }
         } catch(DataAccessException e) {
-            response.setSuccess(false);
-            response.setMessage("Error: Internal server");
-            db.closeConnection(false);
+            handleResponse(db, personIDResult, "Error: Internal server", false);
         }
 
-        return response;
+        return personIDResult;
     }
 }

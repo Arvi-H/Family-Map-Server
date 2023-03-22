@@ -32,6 +32,12 @@ public class LoginResult extends Result {
      */
     public LoginResult() {}
 
+    public void setLoginResult(String authToken, String username, String personID) {
+        this.authtoken = authToken;
+        this.username = username;
+        this.personID = personID;
+    }
+
     public String getAuthtoken() {
         return authtoken;
     }

@@ -1,19 +1,16 @@
 package Service;
 
 import DataAccess.*;
-import Model.AuthToken;
-import Model.User;
+import Model.*;
 import Request.RegisterRequest;
-import Result.ClearResult;
 import Result.RegisterResult;
-import passoffrequest.FillRequest;
 
 import static Network.RandomUUID.getRandomUUID;
 
 /**
  * A service class that handles registration requests from the user.
  */
-public class RegisterService {
+public class RegisterService extends Service {
     /**
      * Registers a user with the given information.
      * @param registerRequest the RegisterRequest containing the user's information.
@@ -24,29 +21,16 @@ public class RegisterService {
         RegisterResult registerResult = new RegisterResult();
 
         try {
-            // Open Connection
             db.openConnection();
 
-            // Data Access Classes
             UserDao userDao = new UserDao(db.getConnection());
             PersonDao personDao = new PersonDao(db.getConnection());
             AuthTokenDao authTokenDao = new AuthTokenDao(db.getConnection());
             EventDao eventDao = new EventDao(db.getConnection());
 
-            boolean validUsername = !registerRequest.getUsername().isEmpty();
-            boolean validPassword = !registerRequest.getPassword().isEmpty();
-            boolean validEmail = !registerRequest.getEmail().isEmpty();
-            boolean validFirstName = !registerRequest.getFirstName().isEmpty();
-            boolean validLastName = !registerRequest.getLastName().isEmpty();
-            boolean validGender = (registerRequest.getGender().equals("m") || registerRequest.getGender().equals("f"));
-
             // If the request is valid
-            if (validUsername && validPassword && validEmail && validFirstName && validLastName && validGender) {
-                if (userDao.userExists(registerRequest.getUsername())) {
-                    registerResult.setSuccess(false);
-                    registerResult.setMessage("Error username already exists - Register Service");
-                    db.closeConnection(false);
-                } else {
+            if (validRequest(registerRequest)) {
+                if (userDao.find(registerRequest.getUsername()) == null) {
                     // New User
                     String newPersonID = getRandomUUID();
                     User userToInsert = new User(registerRequest.getUsername(), registerRequest.getPassword(), registerRequest.getEmail(), registerRequest.getFirstName(), registerRequest.getLastName(), registerRequest.getGender(), newPersonID);
@@ -63,25 +47,24 @@ public class RegisterService {
                     authTokenDao.insert(authToken);
 
                     // Record Response
-                    registerResult.setUsername(userToInsert.getUsername());
-                    registerResult.setAuth_token(authTokenString);
-                    registerResult.setPersonID(newPersonID);
-                    registerResult.setSuccess(true);
+                    registerResult.setRegisterResult(authTokenString, userToInsert.getUsername(), newPersonID);
 
-                    // Close Connection
-                    db.closeConnection(true);
+                    // Handle Response and Close Connection
+                    handleResponse(db, registerResult,"Register Succeeded.", true);
+
+                } else {
+                    handleResponse(db, registerResult,"Error: Username Already Exists", false);
                 }
             } else {
-                registerResult.setSuccess(false);
-                registerResult.setMessage("Error: Missing info");
-                db.closeConnection(false);
+                handleResponse(db, registerResult,"Error: Missing info", false);
             }
         } catch (DataAccessException e) {
-            registerResult = new RegisterResult();
-            registerResult.setMessage(e.getMessage());
-            registerResult.setSuccess(false);
-            db.closeConnection(false);
+            handleResponse(db, registerResult, e.getMessage(), false);
         }
         return registerResult;
+    }
+
+    public boolean validRequest(RegisterRequest registerRequest) {
+        return !registerRequest.getUsername().isEmpty() && !registerRequest.getPassword().isEmpty() && !registerRequest.getEmail().isEmpty() && !registerRequest.getFirstName().isEmpty() && !registerRequest.getLastName().isEmpty() && (registerRequest.getGender().equals("m") || registerRequest.getGender().equals("f"));
     }
 }

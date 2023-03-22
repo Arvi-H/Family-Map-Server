@@ -19,9 +19,9 @@ public class ClearService extends Service {
         try {
             db.openConnection();
             db.clearTables();
-            handleResponseAndCloseConnection(db, clearResult, "Clear succeeded.", true);
+            handleResponse(db, clearResult, "Clear succeeded.", true);
         } catch (DataAccessException e) {
-            handleResponseAndCloseConnection(db, clearResult, e.getMessage(), false);
+            handleResponse(db, clearResult, e.getMessage(), false);
         }
 
         return clearResult;

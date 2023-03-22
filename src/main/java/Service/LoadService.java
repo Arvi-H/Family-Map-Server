@@ -31,10 +31,10 @@ public class LoadService extends Service {
             for (Event event : loadRequest.getEvents()) {eventDao.insert(event);}
 
             String resultMsg = "Successfully added " + loadRequest.getUsers().length + " users, " + loadRequest.getPersons().length + " persons, and " + loadRequest.getEvents().length + " events to the database";
-            handleResponseAndCloseConnection(db, loadResult, resultMsg, true);
+            handleResponse(db, loadResult, resultMsg, true);
 
         } catch (DataAccessException e) {
-            handleResponseAndCloseConnection(db, loadResult, e.getMessage(), false);
+            handleResponse(db, loadResult, e.getMessage(), false);
         }
         return loadResult;
     }
