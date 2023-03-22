@@ -1,16 +1,14 @@
 package Service;
 
 import DataAccess.*;
-import Model.Event;
-import Model.Person;
-import Model.User;
+import Model.*;
 import Request.LoadRequest;
 import Result.LoadResult;
 
 /**
  * This class represents a service that loads data or resources in response to requests.
  */
-public class LoadService {
+public class LoadService extends Service {
     /**
      * Loads the provided data into the database.
      * @param loadRequest LoadRequest object containing the data to be loaded
@@ -19,39 +17,24 @@ public class LoadService {
     public LoadResult load(LoadRequest loadRequest) {
         Database db = new Database();
         LoadResult loadResult = new LoadResult();
-        int numUsers = 0, numPersons = 0, numEvents = 0;
 
         try {
             db.openConnection();
             db.clearTables();
 
-            for (User user : loadRequest.getUsers()) {
-                UserDao userDao = new UserDao(db.getConnection());
-                userDao.insert(user);
-                numUsers++;
-            }
+            UserDao userDao = new UserDao(db.getConnection());
+            PersonDao personDao = new PersonDao(db.getConnection());
+            EventDao eventDao = new EventDao(db.getConnection());
 
-            for (Person person : loadRequest.getPersons()) {
-                PersonDao personDao = new PersonDao(db.getConnection());
-                personDao.insert(person);
-                numPersons++;
-            }
+            for (User user : loadRequest.getUsers()) {userDao.insert(user);}
+            for (Person person : loadRequest.getPersons()) {personDao.insert(person);}
+            for (Event event : loadRequest.getEvents()) {eventDao.insert(event);}
 
-            for (Event event : loadRequest.getEvents()) {
-                EventDao eventDao = new EventDao(db.getConnection());
-                eventDao.insert(event);
-                numEvents++;
-            }
+            String resultMsg = "Successfully added " + loadRequest.getUsers().length + " users, " + loadRequest.getPersons().length + " persons, and " + loadRequest.getEvents().length + " events to the database";
+            handleResponseAndCloseConnection(db, loadResult, resultMsg, true);
 
-            String resultMsg = "Successfully added " + numUsers + " users, " + numPersons + " persons, and " + numEvents + " events to the database";
-            loadResult.setMessage(resultMsg);
-            loadResult.setSuccess(true);
-
-            db.closeConnection(true);
         } catch (DataAccessException e) {
-            loadResult.setMessage(e.getMessage());
-            loadResult.setSuccess(false);
-            db.closeConnection(false);
+            handleResponseAndCloseConnection(db, loadResult, e.getMessage(), false);
         }
         return loadResult;
     }
