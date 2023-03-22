@@ -32,7 +32,7 @@ public class EventDao {
         eventCount = 0;
         this.conn = conn;
         try {
-            locations = deserializeLocationsList(new File("json/locations.json"));
+            locations = deserializeFromFile(new File("json/locations.json"), Locations.class);
         } catch (IOException e) {
             e.printStackTrace();
         }

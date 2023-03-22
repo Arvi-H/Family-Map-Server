@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
-import static Network.Deserializer.deserializeNameList;
+import static Network.Deserializer.deserializeFromFile;
 import static Network.RandomUUID.getRandomUUID;
 
 /**
@@ -36,9 +36,9 @@ public class PersonDao {
         numPersons = 0;
         this.conn = conn;
         try {
-            Names males = deserializeNameList(new File("json/mnames.json"));
-            Names females = deserializeNameList(new File("json/fnames.json"));
-            Names surnames = deserializeNameList(new File("json/snames.json"));
+            Names males = deserializeFromFile(new File("json/mnames.json"), Names.class);
+            Names females = deserializeFromFile(new File("json/fnames.json"), Names.class);
+            Names surnames = deserializeFromFile(new File("json/snames.json"), Names.class);
 
             maleNames = new ArrayList<String>(Arrays.asList(males.getNames()));
             femaleNames = new ArrayList<String>(Arrays.asList(females.getNames()));
